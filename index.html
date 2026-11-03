@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
-    /* ... здесь весь ваш CSS без изменений ... */
     :root {
       --bg-deep: #0a1628;
       --bg-mid: #122040;
@@ -26,21 +25,468 @@
       --font-body: 'PT Serif', Georgia, serif;
       --radius: 3px;
     }
-    /* ... и так далее ... */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-deep);
+      color: var(--text-light);
+      font-size: 17px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    h1 { font-size: clamp(2.2rem, 5.5vw, 3.8rem); color: var(--gold-light); letter-spacing: 0.01em; }
+    h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); color: var(--gold-light); margin-bottom: 1.75rem; position: relative; }
+    h2::after { content: ''; display: block; width: 48px; height: 1px; background: var(--gold); margin-top: 0.7rem; }
+    h3 { font-size: 1.2rem; color: var(--gold-light); margin-bottom: 0.4rem; }
+    a { color: var(--gold-light); text-decoration: none; transition: color 0.2s; }
+    svg { display: block; max-width: 100%; }
+
+    /* Шапка */
+    .site-header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10, 22, 40, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .header-inner {
+      max-width: 1160px; margin: 0 auto;
+      padding: 0.9rem 1.25rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-family: var(--font-display); font-size: 1.3rem; font-weight: 700;
+      color: var(--gold-light); letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .logo span { display: inline-block; border-bottom: 1px solid var(--gold-dim); padding-bottom: 0.15rem; }
+    .logo:hover span { border-bottom-color: var(--gold); }
+
+    .nav-toggle {
+      display: none; background: none; border: 1px solid var(--border-subtle);
+      border-radius: var(--radius); color: var(--gold-light);
+      font-family: var(--font-body); font-size: 0.95rem;
+      padding: 0.4rem 0.8rem; cursor: pointer;
+    }
+    .nav-toggle:hover { border-color: var(--gold); }
+
+    .site-nav ul { display: flex; gap: 1.6rem; list-style: none; }
+    .site-nav a {
+      font-size: 0.95rem; letter-spacing: 0.03em; color: var(--text-muted);
+      padding: 0.3rem 0; border-bottom: 1px solid transparent;
+    }
+    .site-nav a:hover, .site-nav a:focus-visible { color: var(--gold-light); border-bottom-color: var(--gold); }
+
+    /* Главный экран */
+    .hero {
+      position: relative; overflow: hidden;
+      padding: clamp(3rem, 7vw, 6rem) 1.25rem clamp(2.5rem, 5vw, 4.5rem);
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 28% 18%, rgba(201, 162, 39, 0.07), transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative; max-width: 1160px; margin: 0 auto;
+      display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 2rem; align-items: center;
+    }
+    .eyebrow {
+      font-size: 0.82rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold-dim); margin-bottom: 1.1rem;
+    }
+    .hero-subtitle {
+      font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+      color: var(--text-muted); margin-top: 1.25rem; max-width: 34em;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+    .btn {
+      display: inline-flex; align-items: center;
+      padding: 0.85rem 1.6rem; font-family: var(--font-body);
+      font-size: 0.95rem; letter-spacing: 0.04em;
+      border-radius: var(--radius); border: 1px solid;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .btn-primary {
+      background: var(--gold); color: var(--bg-deep);
+      border-color: var(--gold); font-weight: 700;
+    }
+    .btn-primary:hover, .btn-primary:focus-visible {
+      background: var(--gold-light); border-color: var(--gold-light);
+    }
+    .btn-ghost {
+      background: transparent; color: var(--gold-light);
+      border-color: var(--border-strong);
+    }
+    .btn-ghost:hover, .btn-ghost:focus-visible { border-color: var(--gold); color: var(--gold); }
+    .btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+    .hero-art {
+      justify-self: center; width: 100%; max-width: 280px;
+      color: var(--gold); opacity: 0.5;
+    }
+    .rosette { width: 100%; height: auto; }
+    .rosette line, .rosette circle { stroke: currentColor; fill: none; stroke-width: 0.9; }
+    .rosette-core { fill: currentColor; stroke: none; }
+
+    /* Секции */
+    .section { padding: clamp(2.75rem, 6vw, 4.5rem) 1.25rem; }
+    .section-inner { max-width: 1160px; margin: 0 auto; }
+    .section-alt { background: var(--bg-mid); }
+
+    /* О календаре */
+    .about-grid {
+      display: grid; grid-template-columns: 1.5fr 1fr;
+      gap: clamp(2rem, 5vw, 4rem); align-items: start;
+    }
+    .about-text p { margin-bottom: 1rem; max-width: 46em; }
+    .about-text p:last-child { margin-bottom: 0; }
+    .about-aside {
+      border-top: 1px solid var(--gold-dim); padding-top: 1.25rem;
+      display: flex; flex-direction: column; gap: 1.1rem;
+    }
+    .aside-row { display: flex; flex-direction: column; gap: 0.15rem; }
+    .aside-label {
+      font-size: 0.78rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .aside-value { font-family: var(--font-display); font-size: 1.2rem; color: var(--gold-light); }
+
+    /* Дни цикла */
+    .cycle-list { list-style: none; }
+    .cycle-item {
+      display: grid; grid-template-columns: 150px 1fr;
+      gap: 2rem; padding: 1.6rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .cycle-item:first-child { padding-top: 0; }
+    .cycle-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .cycle-date { font-family: var(--font-display); font-size: 1.15rem; color: var(--gold); }
+    .cycle-content p { color: var(--text-light); font-size: 0.96rem; }
+
+    /* Цитата */
+    .quote-banner {
+      position: relative; padding: clamp(3rem, 7vw, 5rem) 1.25rem; text-align: center;
+    }
+    .quote-banner::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 50% 60% at 50% 50%, rgba(201, 162, 39, 0.06), transparent 70%);
+      pointer-events: none;
+    }
+    .quote-inner { position: relative; max-width: 760px; margin: 0 auto; }
+    .ornament-divider {
+      width: 120px; height: 1px; background: var(--gold-dim);
+      margin: 0 auto; position: relative;
+    }
+    .ornament-divider::after {
+      content: ''; position: absolute; left: 50%; top: 50%;
+      width: 6px; height: 6px; background: var(--gold);
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+    blockquote { margin: 2rem 0; }
+    blockquote p {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4.5vw, 2.9rem);
+      color: var(--gold-light); line-height: 1.25; font-weight: 600;
+    }
+    blockquote cite {
+      display: block; margin-top: 1.2rem; font-style: normal;
+      font-size: 0.85rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+
+    /* Разделы */
+    .section-header {
+      display: flex; align-items: baseline;
+      justify-content: space-between; gap: 1rem;
+      flex-wrap: wrap; margin-bottom: 1.75rem;
+    }
+    .section-header h2 { margin-bottom: 0; }
+
+    .refresh-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent; border: 1px solid var(--border-strong);
+      border-radius: var(--radius); color: var(--gold-light);
+      font-family: var(--font-body); font-size: 0.88rem;
+      letter-spacing: 0.04em; padding: 0.5rem 0.95rem;
+      cursor: pointer; transition: border-color 0.2s, color 0.2s, opacity 0.2s;
+      flex-shrink: 0;
+    }
+    .refresh-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+    .refresh-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    .refresh-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .refresh-icon {
+      width: 1em; height: 1em; stroke: currentColor; fill: none;
+      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+      transition: transform 0.2s;
+    }
+    .refresh-btn.is-loading .refresh-icon { animation: refresh-spin 0.85s linear infinite; }
+    @keyframes refresh-spin { to { transform: rotate(360deg); } }
+
+    .sections-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .section-card {
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius); padding: 1.35rem 1.5rem 1.5rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+      transition: border-color 0.25s, background 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .section-card:hover { border-color: var(--border-strong); background: #1e3460; }
+    .section-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    .section-card[href] { cursor: pointer; }
+    .section-card .card-order {
+      font-family: var(--font-display); font-size: 0.85rem;
+      color: var(--gold-dim); letter-spacing: 0.1em; margin-bottom: 0.15rem;
+    }
+    .section-card .card-title {
+      font-family: var(--font-display); font-size: 1.35rem;
+      color: var(--gold-light); line-height: 1.2;
+    }
+    .section-card .card-text { font-size: 0.93rem; color: var(--text-light); flex: 1; }
+    .section-card .card-arrow {
+      align-self: flex-end; font-size: 1.2rem; color: var(--gold-dim);
+      transition: transform 0.2s, color 0.2s; line-height: 1;
+    }
+    .section-card[href]:hover .card-arrow,
+    .section-card[href]:focus-visible .card-arrow {
+      transform: translateX(4px); color: var(--gold);
+    }
+
+    .sections-status {
+      grid-column: 1 / -1; padding: 1.5rem 0;
+      color: var(--text-muted); font-style: italic; font-size: 0.95rem;
+    }
+    .sections-status.is-error { color: #e0a0a0; }
+
+    /* Подвал */
+    .site-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 1.75rem 1.25rem; text-align: center;
+      font-size: 0.85rem; color: var(--text-muted);
+    }
+
+    /* Адаптив */
+    @media (max-width: 900px) {
+      .about-grid, .hero-inner { grid-template-columns: 1fr; }
+      .hero-art { display: none; }
+    }
+    @media (max-width: 760px) {
+      .nav-toggle { display: block; }
+      .site-nav {
+        position: absolute; top: 100%; left: 0; right: 0;
+        background: rgba(10, 22, 40, 0.98);
+        border-bottom: 1px solid var(--border-subtle);
+        display: none; padding: 0.75rem 1.25rem 1.25rem;
+      }
+      .site-nav.is-open { display: block; }
+      .site-nav ul { flex-direction: column; gap: 0.5rem; }
+      .site-nav a { display: block; padding: 0.6rem 0; font-size: 1rem; border-bottom: 1px solid var(--border-subtle); }
+      .site-nav a:last-child { border-bottom: none; }
+    }
+    @media (max-width: 620px) {
+      .cycle-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .sections-grid { grid-template-columns: 1fr; }
+      .section-header { align-items: center; }
+      .refresh-btn { font-size: 0.82rem; padding: 0.45rem 0.8rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+      .refresh-btn.is-loading .refresh-icon { animation: none; }
+    }
   </style>
 </head>
 <body>
-  <!-- ... вся HTML-разметка без изменений ... -->
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo"><span>Рождественский календарь</span></a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav">Меню</button>
+      <nav class="site-nav" id="main-nav" aria-label="Основная навигация">
+        <ul>
+          <li><a href="calendar.html">Календарь</a></li>
+          <li><a href="tradition.html">О традиции</a></li>
+          <li><a href="tasks.html">Задания</a></li>
+          <li><a href="recipes.html">Рецепты</a></li>
+          <li><a href="contacts.html">Контакты</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-text">
+          <p class="eyebrow">Православная традиция · новый стиль</p>
+          <h1>Рождественский календарь</h1>
+          <p class="hero-subtitle">Двадцать четыре дня — от 14 декабря до сочельника. Памяти святых, постные рецепты, семейные задания и главные праздники цикла.</p>
+          <div class="hero-actions">
+            <a href="calendar.html" class="btn btn-primary">Открыть календарь</a>
+            <a href="tradition.html" class="btn btn-ghost">О традиции</a>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <svg class="rosette" viewBox="0 0 200 200" focusable="false">
+            <circle cx="100" cy="100" r="92"/>
+            <circle cx="100" cy="100" r="26"/>
+            <circle class="rosette-core" cx="100" cy="100" r="4"/>
+            <line x1="192" y1="100" x2="126" y2="100"/>
+            <line x1="165.05" y1="165.05" x2="118.38" y2="118.38"/>
+            <line x1="100" y1="192" x2="100" y2="126"/>
+            <line x1="34.95" y1="165.05" x2="81.62" y2="118.38"/>
+            <line x1="8" y1="100" x2="74" y2="100"/>
+            <line x1="34.95" y1="34.95" x2="81.62" y2="81.62"/>
+            <line x1="100" y1="8" x2="100" y2="74"/>
+            <line x1="165.05" y1="34.95" x2="118.38" y2="81.62"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-inner about-grid">
+        <div class="about-text">
+          <h2>О календаре</h2>
+          <p>Календарь начинается 14 декабря и заканчивается в сочельник — 6 января. Двадцать четыре дня, в которые Церковь вспоминает святых, готовится к Рождеству и входит в него.</p>
+          <p>Каждый день — карточка: дата, память святого или праздник, короткое пояснение и один практический элемент. Где-то это традиция, где-то задание для семьи, где-то постный рецепт.</p>
+          <p>Мы держимся нового стиля. Православная традиция здесь не смешана с западной: нет Санта-Клауса, оленей и «Xmas». Только Рождественский пост, Введение во храм, Никола Зимний, сочельник, Рождество, Святки и Крещение.</p>
+        </div>
+        <aside class="about-aside">
+          <div class="aside-row">
+            <span class="aside-label">Рождественский пост</span>
+            <span class="aside-value">28 ноября — 6 января</span>
+          </div>
+          <div class="aside-row">
+            <span class="aside-label">Календарь</span>
+            <span class="aside-value">14 декабря — 6 января</span>
+          </div>
+          <div class="aside-row">
+            <span class="aside-label">Святки</span>
+            <span class="aside-value">7 — 17 января</span>
+          </div>
+          <div class="aside-row">
+            <span class="aside-label">Крещение Господне</span>
+            <span class="aside-value">19 января</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="section-inner">
+        <h2>Главные дни цикла</h2>
+        <ol class="cycle-list">
+          <li class="cycle-item">
+            <div class="cycle-date">28 ноября</div>
+            <div class="cycle-content">
+              <h3>Начало Рождественского поста</h3>
+              <p>Сорок дней воздержания и внимания к душе. Пост называется также Филипповым — по дню памяти апостола Филиппа, на который приходится заговенье.</p>
+            </div>
+          </li>
+          <li class="cycle-item">
+            <div class="cycle-date">4 декабря</div>
+            <div class="cycle-content">
+              <h3>Введение во храм Пресвятой Богородицы</h3>
+              <p>Трёхлетняя Дева Мария была приведена родителями в Иерусалимский храм и осталась там, чтобы служить Богу. Праздник говорит о встрече человека с храмом.</p>
+            </div>
+          </li>
+          <li class="cycle-item">
+            <div class="cycle-date">19 декабря</div>
+            <div class="cycle-content">
+              <h3>Никола Зимний</h3>
+              <p>Память святителя Николая, архиепископа Мир Ликийских. Один из самых любимых на Руси праздников — день милосердия, помощи и тихой радости.</p>
+            </div>
+          </li>
+          <li class="cycle-item">
+            <div class="cycle-date">6 января</div>
+            <div class="cycle-content">
+              <h3>Рождественский сочельник</h3>
+              <p>Последний день поста и канун Рождества. По уставу вкушают сочиво — пшеницу с мёдом и маком. Вечером совершается всенощное бдение.</p>
+            </div>
+          </li>
+          <li class="cycle-item">
+            <div class="cycle-date">7 января</div>
+            <div class="cycle-content">
+              <h3>Рождество Христово</h3>
+              <p>Главный праздник цикла. Церковь празднует рождение Спасителя, и сорокадневный пост сменяется двенадцатидневным торжеством.</p>
+            </div>
+          </li>
+          <li class="cycle-item">
+            <div class="cycle-date">7 — 17 января</div>
+            <div class="cycle-content">
+              <h3>Святки</h3>
+              <p>Святые дни между Рождеством и Крещением. Время колядок, семейного общения и дел милосердия. Гадания Церковь не благословляет.</p>
+            </div>
+          </li>
+          <li class="cycle-item">
+            <div class="cycle-date">19 января</div>
+            <div class="cycle-content">
+              <h3>Крещение Господне</h3>
+              <p>Праздник Богоявления. Вспоминается крещение Христа в Иордане и освящение воды. Святки завершаются.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="quote-banner" aria-label="Цитата из канона Рождества">
+      <div class="quote-inner">
+        <div class="ornament-divider" aria-hidden="true"></div>
+        <blockquote>
+          <p>«Христос рождается — славите!»</p>
+          <cite>Из канона Рождества Христова</cite>
+        </blockquote>
+        <div class="ornament-divider" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="sections">
+      <div class="section-inner">
+        <div class="section-header">
+          <h2>Разделы</h2>
+          <button class="refresh-btn" id="refresh-btn" type="button" aria-busy="false" aria-label="Обновить разделы">
+            <svg class="refresh-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <polyline points="1 20 1 14 7 14"></polyline>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+            <span class="refresh-label" aria-live="polite">Обновить</span>
+          </button>
+        </div>
+        <div class="sections-grid" id="sections-grid">
+          <p class="sections-status">Загрузка разделов…</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Рождественский календарь. Даты даны по новому стилю.</p>
+  </footer>
 
   <script>
     (function () {
-      // ... навигация ...
+      /* Мобильное меню */
       const navToggle = document.querySelector('.nav-toggle');
       const siteNav = document.querySelector('.site-nav');
+
       navToggle.addEventListener('click', function () {
         const isOpen = siteNav.classList.toggle('is-open');
         navToggle.setAttribute('aria-expanded', String(isOpen));
       });
+
       siteNav.querySelectorAll('a').forEach(function (link) {
         link.addEventListener('click', function () {
           siteNav.classList.remove('is-open');
@@ -48,18 +494,12 @@
         });
       });
 
-      // 👇 ИСПРАВЛЕННЫЙ БЛОК ЗАГРУЗКИ ДАННЫХ 👇
-      
-      // 1. Берем ID таблицы из вашей ссылки
-      const SHEET_ID = '2PACX-1vTZ8ScGrpg72Ujy286RowU9xbEi8kE-BJ7jKaGAbpRBQ1JDWGzDSoOY2oC717pRF-a6vlivxqdvTvmk';
-      
-      // 2. Используем эндпоинт gviz/tq, который поддерживает CORS
-      const SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Sheet1`;
+      /* Загрузка карточек */
+      const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTZ8ScGrpg72Ujy286RowU9xbEi8kE-BJ7jKaGAbpRBQ1JDWGzDSoOY2oC717pRF-a6vlivxqdvTvmk/pub?gid=0&single=true&output=csv';
 
-      // 3. Надежные прокси (corsproxy.io + резервный allorigins)
       const PROXIES = [
-        'https://corsproxy.io/?url=',
-        'https://api.allorigins.win/raw?url='
+        'https://api.allorigins.win/raw?url=',
+        'https://api.codetabs.com/v1/proxy?quest='
       ];
 
       const REFRESH_COOLDOWN_MS = 4000;
@@ -156,23 +596,29 @@
           const card = document.createElement(item.link ? 'a' : 'div');
           card.className = 'section-card';
           if (item.link) card.href = item.link;
+
           const orderEl = document.createElement('span');
           orderEl.className = 'card-order';
           orderEl.textContent = String(item.order).padStart(2, '0');
+
           const titleEl = document.createElement('span');
           titleEl.className = 'card-title';
           titleEl.textContent = item.title;
+
           const textEl = document.createElement('span');
           textEl.className = 'card-text';
           textEl.textContent = item.text;
+
           const arrowEl = document.createElement('span');
           arrowEl.className = 'card-arrow';
           arrowEl.setAttribute('aria-hidden', 'true');
           arrowEl.textContent = '→';
+
           card.appendChild(orderEl);
           card.appendChild(titleEl);
           card.appendChild(textEl);
           card.appendChild(arrowEl);
+
           if (!item.link) {
             arrowEl.style.display = 'none';
             card.style.cursor = 'default';
@@ -183,29 +629,47 @@
       }
 
       async function fetchWithProxy(url) {
+        // 1. Пробуем прямой запрос (вдруг Google отдаст CORS)
+        try {
+          const directRes = await fetch(url, { cache: 'no-store' });
+          if (directRes.ok) return await directRes.text();
+        } catch (e) {
+          // Игнорируем ошибку CORS и идем к прокси
+        }
+
+        // 2. Пробуем прокси по очереди
         let lastError = null;
         for (const proxy of PROXIES) {
           try {
             const response = await fetch(proxy + encodeURIComponent(url), { cache: 'no-store' });
-            if (response.ok) return await response.text();
-            lastError = new Error(`Прокси ${proxy} вернул HTTP ${response.status}`);
+            if (response.ok) {
+              const text = await response.text();
+              // Проверка, что вернулся не HTML с ошибкой
+              if (text.trim().toLowerCase().startsWith('<!doctype html') || text.trim().toLowerCase().startsWith('<html')) {
+                throw new Error('Прокси вернул HTML вместо CSV');
+              }
+              return text;
+            }
+            lastError = new Error(`HTTP ${response.status}`);
           } catch (e) {
             lastError = e;
           }
         }
-        throw lastError || new Error('Все прокси недоступны');
+        throw lastError || new Error('Все способы загрузки недоступны');
       }
 
       async function loadSections(userInitiated) {
         setButtonState('loading');
         grid.innerHTML = '<p class="sections-status">Загрузка разделов…</p>';
         let succeeded = false;
+
         try {
           const cacheBuster = (SHEET_CSV_URL.includes('?') ? '&' : '?') + '_=' + Date.now();
           const csvText = await fetchWithProxy(SHEET_CSV_URL + cacheBuster);
           const rows = parseCSV(csvText);
+
           if (rows.length < 2) throw new Error('В таблице нет данных (менее двух строк).');
-          
+
           const header = rows[0].map(cell => cell.trim().toLowerCase());
           const orderIdx = header.indexOf('порядок');
           const titleIdx = header.indexOf('заголовок');
@@ -236,6 +700,7 @@
           console.error('Не удалось загрузить разделы:', error);
           grid.innerHTML = `<p class="sections-status is-error">Не удалось загрузить разделы. ${error.message}. Проверьте подключение и нажмите «Обновить».</p>`;
         }
+
         if (userInitiated) {
           startCooldown(succeeded);
         } else {
@@ -248,7 +713,6 @@
       });
 
       loadSections(false);
-      // 👆 КОНЕЦ ИСПРАВЛЕННОГО БЛОКА 👆
     })();
   </script>
 
