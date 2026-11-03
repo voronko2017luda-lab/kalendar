@@ -263,12 +263,17 @@
       color: var(--gold-light); line-height: 1.2;
     }
     .section-card .card-text { font-size: 0.93rem; color: var(--text-light); flex: 1; }
-    .section-card .card-arrow {
+    
+    /* Общая стрелочка */
+    .card-arrow {
       align-self: flex-end; font-size: 1.2rem; color: var(--gold-dim);
       transition: transform 0.2s, color 0.2s; line-height: 1;
+      margin-top: auto;
     }
     .section-card[href]:hover .card-arrow,
-    .section-card[href]:focus-visible .card-arrow {
+    .section-card[href]:focus-visible .card-arrow,
+    a.gallery-card:hover .card-arrow,
+    a.gallery-card:focus-visible .card-arrow {
       transform: translateX(4px); color: var(--gold);
     }
 
@@ -297,7 +302,6 @@
       color: inherit;
     }
     
-    /* Эффекты при наведении, если карточка является ссылкой */
     a.gallery-card:hover {
       border-color: var(--border-strong);
       transform: translateY(-2px);
@@ -535,7 +539,6 @@
       </div>
     </section>
 
-    <!-- Секция Разделы -->
     <section class="section section-alt" id="sections">
       <div class="section-inner">
         <div class="section-header">
@@ -555,7 +558,6 @@
       </div>
     </section>
 
-    <!-- Секция Галерея -->
     <section class="section" id="gallery">
       <div class="section-inner">
         <div class="section-header">
@@ -780,7 +782,6 @@
           const rows = parseCSV(csvText);
           if (rows.length < 2) throw new Error('В таблице нет данных.');
 
-          // Убираем все пробелы из заголовков для надежности
           const header = rows[0].map(c => c.trim().toLowerCase().replace(/\s+/g, ''));
           
           const orderIdx = header.indexOf('порядок');
@@ -836,7 +837,6 @@
         }
         const fragment = document.createDocumentFragment();
         items.forEach(item => {
-          // Если есть ссылка, делаем карточку кликабельной (<a>), иначе обычный <div>
           const card = document.createElement(item.link ? 'a' : 'div');
           card.className = 'gallery-card';
           
@@ -851,7 +851,7 @@
           
           const img = document.createElement('img');
           img.className = 'gallery-img';
-          img.src = item.imageLink; // Ссылка на картинку из столбца "СсылкаКартинка"
+          img.src = item.imageLink;
           img.alt = item.title || 'Изображение галереи';
           img.loading = 'lazy'; 
           
@@ -875,6 +875,15 @@
             content.appendChild(text);
           }
 
+          // Добавляем стрелочку только если есть ссылка
+          if (item.link) {
+            const arrowEl = document.createElement('span');
+            arrowEl.className = 'card-arrow';
+            arrowEl.setAttribute('aria-hidden', 'true');
+            arrowEl.textContent = '→';
+            content.appendChild(arrowEl);
+          }
+
           card.appendChild(content);
           fragment.appendChild(card);
         });
@@ -892,14 +901,13 @@
           const rows = parseCSV(csvText);
           if (rows.length < 2) throw new Error('В таблице нет данных.');
 
-          // Убираем все пробелы из заголовков
           const header = rows[0].map(c => c.trim().toLowerCase().replace(/\s+/g, ''));
           
           const orderIdx = header.indexOf('порядок');
           const titleIdx = header.indexOf('заголовок');
           const textIdx = header.indexOf('текст');
-          const imageLinkIdx = header.indexOf('ссылкакартинка'); // Столбец с URL картинки
-          const linkIdx = header.indexOf('ссылка'); // Столбец с URL для клика
+          const imageLinkIdx = header.indexOf('ссылкакартинка');
+          const linkIdx = header.indexOf('ссылка');
           const activeIdx = header.indexOf('активность');
 
           if (orderIdx === -1 || titleIdx === -1 || textIdx === -1 || imageLinkIdx === -1 || activeIdx === -1) {
@@ -915,7 +923,6 @@
               link: linkIdx !== -1 && row[linkIdx] ? row[linkIdx].trim() : '',
               active: isActive(row[activeIdx])
             }))
-            // Фильтруем: активные, с картинкой и валидным порядком
             .filter(item => item.active && item.imageLink && !isNaN(item.order))
             .sort((a, b) => a.order - b.order);
 
