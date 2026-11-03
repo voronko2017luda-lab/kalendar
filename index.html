@@ -246,11 +246,15 @@
     .section-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
     .section-card[href] { cursor: pointer; }
     
-    /* Новый класс для даты */
+    /* Обновленный блок даты */
     .section-card .card-date {
-      font-family: var(--font-display); font-size: 0.95rem;
-      color: var(--gold-dim); letter-spacing: 0.05em; margin-bottom: 0.15rem;
-      text-transform: uppercase;
+      font-family: var(--font-display);
+      font-size: 2rem; /* Увеличенный шрифт */
+      font-weight: 700;
+      color: var(--gold); /* Более контрастный цвет */
+      letter-spacing: 0.03em;
+      margin-bottom: 0.25rem;
+      line-height: 1.1;
     }
     
     .section-card .card-title {
@@ -601,7 +605,6 @@
           card.className = 'section-card';
           if (item.link) card.href = item.link;
 
-          // Дата вместо порядкового номера
           const dateEl = document.createElement('span');
           dateEl.className = 'card-date';
           dateEl.textContent = item.date;
@@ -672,7 +675,6 @@
 
           const header = rows[0].map(cell => cell.trim().toLowerCase());
           
-          // Ищем новые столбцы
           const orderIdx = header.indexOf('порядок');
           const dateIdx = header.indexOf('дата');
           const titleIdx = header.indexOf('заголовок');
@@ -680,7 +682,6 @@
           const linkIdx = header.indexOf('ссылка');
           const activeIdx = header.indexOf('активность');
 
-          // Проверяем, что все обязательные столбцы на месте
           if (orderIdx === -1 || dateIdx === -1 || titleIdx === -1 || textIdx === -1 || activeIdx === -1) {
             throw new Error('Не найдены нужные столбцы. Проверьте заголовки в таблице.');
           }
@@ -696,9 +697,7 @@
                 active: isActive(row[activeIdx])
               };
             })
-            // Фильтруем выключенные и пустые
             .filter(item => item.active && item.title && !isNaN(item.order))
-            // Сортируем по столбцу "Порядок"
             .sort((a, b) => a.order - b.order);
 
           renderSections(items);
