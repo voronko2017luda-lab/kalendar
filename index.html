@@ -7,615 +7,462 @@
   <title>Рождественский календарь — от поста до Крещения</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-deep: #0a1628;
-      --bg-mid: #122040;
-      --bg-card: #182a4a;
-      --gold: #c9a227;
-      --gold-light: #e3c567;
-      --gold-bright: #f5e6a8;
-      --gold-dim: #9c7e1e;
-      --text-light: #f0e6d2;
-      --text-muted: #c4b89a;
-      --border-subtle: rgba(201, 162, 39, 0.18);
-      --border-strong: rgba(201, 162, 39, 0.45);
-      --font-display: 'Cormorant Garamond', Georgia, serif;
-      --font-body: 'PT Serif', Georgia, serif;
-      --radius: 3px;
+      --bg: #050505;
+      --surface: #0f0f0f;
+      --gold: #D4AF37;
+      --gold-light: #F3E5AB;
+      --text-main: #F5F5F5;
+      --text-muted: #888;
+      --border: rgba(212, 175, 55, 0.2);
+      --font-display: 'Syne', sans-serif;
+      --font-serif: 'Cormorant Garamond', serif;
+      --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg);
+      cursor: none; /* Кастомный курсор */
+    }
+
+    /* Кастомный курсор */
+    .cursor {
+      position: fixed; top: 0; left: 0;
+      width: 12px; height: 12px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s, background 0.3s;
+      mix-blend-mode: difference;
+    }
+    .cursor-outline {
+      position: fixed; top: 0; left: 0;
+      width: 40px; height: 40px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, border-color 0.2s;
+      transition-timing-function: var(--ease-expo);
+    }
+
     body {
-      font-family: var(--font-body);
-      background-color: var(--bg-deep);
-      color: var(--text-light);
-      font-size: 17px;
-      line-height: 1.65;
+      font-family: var(--font-display);
+      color: var(--text-main);
+      overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
-    h1, h2, h3 {
-      font-family: var(--font-display);
-      font-weight: 600;
-      line-height: 1.2;
-    }
-    h1 { font-size: clamp(2.2rem, 5.5vw, 3.8rem); color: var(--gold-light); letter-spacing: 0.01em; }
-    h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); color: var(--gold-light); margin-bottom: 1.75rem; position: relative; }
-    h2::after { content: ''; display: block; width: 48px; height: 1px; background: var(--gold); margin-top: 0.7rem; }
-    h3 { font-size: 1.2rem; color: var(--gold-light); margin-bottom: 0.4rem; }
-    a { color: var(--gold-light); text-decoration: none; transition: color 0.2s; }
-    svg { display: block; max-width: 100%; }
-
+    a { color: inherit; text-decoration: none; cursor: none; }
+    button { cursor: none; }
+    
     /* Шапка */
-    .site-header {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(10, 22, 40, 0.92);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .header-inner {
-      max-width: 1160px; margin: 0 auto;
-      padding: 0.9rem 1.25rem;
-      display: flex; align-items: center; justify-content: space-between;
+    .header {
+      position: fixed; top: 0; left: 0; width: 100%;
+      padding: 2rem 4vw;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 100;
+      mix-blend-mode: difference;
     }
     .logo {
-      font-family: var(--font-display); font-size: 1.3rem; font-weight: 700;
-      color: var(--gold-light); letter-spacing: 0.06em; text-transform: uppercase;
+      font-size: 1.5rem; font-weight: 800; letter-spacing: -0.05em;
+      color: var(--text-main);
     }
-    .logo span { display: inline-block; border-bottom: 1px solid var(--gold-dim); padding-bottom: 0.15rem; }
-    .logo:hover span { border-bottom-color: var(--gold); }
-
-    .nav-toggle {
-      display: none; background: none; border: 1px solid var(--border-subtle);
-      border-radius: var(--radius); color: var(--gold-light);
-      font-family: var(--font-body); font-size: 0.95rem;
-      padding: 0.4rem 0.8rem; cursor: pointer;
+    .nav {
+      display: flex; gap: 3rem;
     }
-    .nav-toggle:hover { border-color: var(--gold); }
-
-    .site-nav ul { display: flex; gap: 1.6rem; list-style: none; }
-    .site-nav a {
-      font-size: 0.95rem; letter-spacing: 0.03em; color: var(--text-muted);
-      padding: 0.3rem 0; border-bottom: 1px solid transparent;
+    .nav a {
+      font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--text-main); position: relative; overflow: hidden;
     }
-    .site-nav a:hover, .site-nav a:focus-visible { color: var(--gold-light); border-bottom-color: var(--gold); }
+    .nav a span { display: block; transition: transform 0.4s var(--ease-expo); }
+    .nav a:hover span { transform: translateY(-100%); }
+    .nav a::after {
+      content: attr(data-text); position: absolute; top: 100%; left: 0;
+      color: var(--gold); transition: transform 0.4s var(--ease-expo);
+    }
+    .nav a:hover::after { transform: translateY(-100%); }
+    
+    .btn-menu { display: none; background: none; border: none; color: white; }
 
-    /* Главный экран */
+    /* Hero Section - Революционная типографика */
     .hero {
-      position: relative; overflow: hidden;
-      padding: clamp(3rem, 7vw, 6rem) 1.25rem clamp(2.5rem, 5vw, 4.5rem);
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 0 4vw;
+      position: relative;
+      overflow: hidden;
     }
+    
+    /* Фоновая сетка */
     .hero::before {
       content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse 70% 60% at 28% 18%, rgba(201, 162, 39, 0.07), transparent 70%);
-      pointer-events: none;
-    }
-    .hero-inner {
-      position: relative; max-width: 1160px; margin: 0 auto;
-      display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 2rem; align-items: center;
-    }
-    .eyebrow {
-      font-size: 0.82rem; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--gold-dim); margin-bottom: 1.1rem;
-    }
-    .hero-subtitle {
-      font-size: clamp(1.05rem, 1.6vw, 1.2rem);
-      color: var(--text-muted); margin-top: 1.25rem; max-width: 34em;
-    }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
-    .btn {
-      display: inline-flex; align-items: center;
-      padding: 0.85rem 1.6rem; font-family: var(--font-body);
-      font-size: 0.95rem; letter-spacing: 0.04em;
-      border-radius: var(--radius); border: 1px solid;
-      transition: background 0.2s, color 0.2s, border-color 0.2s;
-    }
-    .btn-primary {
-      background: var(--gold); color: var(--bg-deep);
-      border-color: var(--gold); font-weight: 700;
-    }
-    .btn-primary:hover, .btn-primary:focus-visible {
-      background: var(--gold-light); border-color: var(--gold-light);
-    }
-    .btn-ghost {
-      background: transparent; color: var(--gold-light);
-      border-color: var(--border-strong);
-    }
-    .btn-ghost:hover, .btn-ghost:focus-visible { border-color: var(--gold); color: var(--gold); }
-    .btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-
-    .hero-art {
-      justify-self: center; width: 100%; max-width: 280px;
-      color: var(--gold); opacity: 0.5;
-    }
-    .rosette { width: 100%; height: auto; }
-    .rosette line, .rosette circle { stroke: currentColor; fill: none; stroke-width: 0.9; }
-    .rosette-core { fill: currentColor; stroke: none; }
-
-    /* Секции */
-    .section { padding: clamp(2.75rem, 6vw, 4.5rem) 1.25rem; }
-    .section-inner { max-width: 1160px; margin: 0 auto; }
-    .section-alt { background: var(--bg-mid); }
-
-    /* О календаре */
-    .about-grid {
-      display: grid; grid-template-columns: 1.5fr 1fr;
-      gap: clamp(2rem, 5vw, 4rem); align-items: start;
-    }
-    .about-text p { margin-bottom: 1rem; max-width: 46em; }
-    .about-text p:last-child { margin-bottom: 0; }
-    .about-aside {
-      border-top: 1px solid var(--gold-dim); padding-top: 1.25rem;
-      display: flex; flex-direction: column; gap: 1.1rem;
-    }
-    .aside-row { display: flex; flex-direction: column; gap: 0.15rem; }
-    .aside-label {
-      font-size: 0.78rem; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--text-muted);
-    }
-    .aside-value { font-family: var(--font-display); font-size: 1.2rem; color: var(--gold-light); }
-
-    /* Дни цикла */
-    .cycle-list { list-style: none; }
-    .cycle-item {
-      display: grid; grid-template-columns: 150px 1fr;
-      gap: 2rem; padding: 1.6rem 0;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .cycle-item:first-child { padding-top: 0; }
-    .cycle-item:last-child { border-bottom: none; padding-bottom: 0; }
-    .cycle-date { font-family: var(--font-display); font-size: 1.15rem; color: var(--gold); }
-    .cycle-content p { color: var(--text-light); font-size: 0.96rem; }
-
-    /* Цитата */
-    .quote-banner {
-      position: relative; padding: clamp(3rem, 7vw, 5rem) 1.25rem; text-align: center;
-    }
-    .quote-banner::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse 50% 60% at 50% 50%, rgba(201, 162, 39, 0.06), transparent 70%);
-      pointer-events: none;
-    }
-    .quote-inner { position: relative; max-width: 760px; margin: 0 auto; }
-    .ornament-divider {
-      width: 120px; height: 1px; background: var(--gold-dim);
-      margin: 0 auto; position: relative;
-    }
-    .ornament-divider::after {
-      content: ''; position: absolute; left: 50%; top: 50%;
-      width: 6px; height: 6px; background: var(--gold);
-      transform: translate(-50%, -50%) rotate(45deg);
-    }
-    blockquote { margin: 2rem 0; }
-    blockquote p {
-      font-family: var(--font-display);
-      font-size: clamp(1.8rem, 4.5vw, 2.9rem);
-      color: var(--gold-light); line-height: 1.25; font-weight: 600;
-    }
-    blockquote cite {
-      display: block; margin-top: 1.2rem; font-style: normal;
-      font-size: 0.85rem; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--text-muted);
+      background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 10vw 10vw;
+      background-position: center;
+      opacity: 0.3;
+      z-index: -1;
+      transform: perspective(500px) rotateX(20deg) scale(1.5);
     }
 
-    /* Заголовок секции с кнопкой */
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(4rem, 15vw, 20rem);
+      line-height: 0.8;
+      font-weight: 300;
+      letter-spacing: -0.04em;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    
+    .hero-title .line-1 { transform: translateX(-5vw); }
+    .hero-title .line-2 { 
+      transform: translateX(5vw); 
+      font-style: italic; 
+      color: var(--gold);
+    }
+
+    .hero-meta {
+      display: flex; justify-content: space-between;
+      width: 100%; max-width: 800px; margin: 4rem auto 0;
+      font-family: var(--font-display); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border); padding-top: 1.5rem;
+    }
+
+    /* Секции контента */
+    .content-section { padding: 8rem 4vw; position: relative; border-bottom: 1px solid var(--border); }
+    
     .section-header {
-      display: flex; align-items: baseline;
-      justify-content: space-between; gap: 1rem;
-      flex-wrap: wrap; margin-bottom: 1.75rem;
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 4rem;
+      border-bottom: 2px solid var(--text-main);
+      padding-bottom: 1rem;
     }
-    .section-header h2 { margin-bottom: 0; }
+    
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(3rem, 6vw, 6rem);
+      font-weight: 400; line-height: 1;
+      letter-spacing: -0.02em;
+    }
 
+    /* Кнопка обновления */
     .refresh-btn {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: transparent; border: 1px solid var(--border-strong);
-      border-radius: var(--radius); color: var(--gold-light);
-      font-family: var(--font-body); font-size: 0.88rem;
-      letter-spacing: 0.04em; padding: 0.5rem 0.95rem;
-      cursor: pointer; transition: border-color 0.2s, color 0.2s, opacity 0.2s;
-      flex-shrink: 0;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text-main); padding: 1rem 2rem;
+      font-family: var(--font-display); font-size: 0.8rem;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      display: flex; align-items: center; gap: 1rem;
+      transition: all 0.3s;
+      overflow: hidden; position: relative;
     }
-    .refresh-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
-    .refresh-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-    .refresh-btn:disabled { opacity: 0.55; cursor: not-allowed; }
-
-    .refresh-icon {
-      width: 1em; height: 1em; stroke: currentColor; fill: none;
-      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-      transition: transform 0.2s;
+    .refresh-btn::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--gold); transform: translateY(100%);
+      transition: transform 0.4s var(--ease-expo); z-index: 0;
     }
-    .refresh-btn.is-loading .refresh-icon { animation: refresh-spin 0.85s linear infinite; }
-    @keyframes refresh-spin { to { transform: rotate(360deg); } }
+    .refresh-btn:hover::before { transform: translateY(0); }
+    .refresh-btn:hover { color: var(--bg); border-color: var(--gold); }
+    .refresh-btn > * { position: relative; z-index: 1; }
+    .refresh-btn.is-loading svg { animation: spin 1s linear infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    /* Карточки разделов */
+    /* --- Карточки разделов (Брутальный дизайн) --- */
     .sections-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 0; /* Убираем отступы для эффекта монолитной сетки */
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
     }
 
     .section-card {
-      background: var(--bg-card); border: 1px solid var(--border-subtle);
-      border-radius: var(--radius); padding: 1.35rem 1.5rem 1.5rem;
-      display: flex; flex-direction: column; gap: 0.5rem;
-      transition: border-color 0.25s, background 0.25s;
-      position: relative; overflow: hidden;
+      display: flex; flex-direction: column;
+      padding: 3rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s;
+      background: var(--bg);
+      min-height: 400px;
+      justify-content: space-between;
     }
-    .section-card:hover { border-color: var(--border-strong); background: #1e3460; }
-    .section-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-    .section-card[href] { cursor: pointer; }
+
+    .section-card::after {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 50% 100%, rgba(212, 175, 55, 0.1), transparent 70%);
+      opacity: 0; transition: opacity 0.4s; pointer-events: none;
+    }
+    .section-card:hover::after { opacity: 1; }
+
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; }
     
-    /* Дата */
-    .section-card .card-date {
+    .card-date {
       font-family: var(--font-display);
-      font-size: 2rem;
-      font-weight: 700;
+      font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--gold);
-      letter-spacing: 0.03em;
-      margin-bottom: 0.25rem;
-      line-height: 1.1;
     }
     
-    .section-card .card-title {
-      font-family: var(--font-display); font-size: 1.35rem;
-      color: var(--gold-light); line-height: 1.2;
+    .card-icon {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border); border-radius: 50%;
+      transition: transform 0.4s var(--ease-expo), background 0.4s, border-color 0.4s;
     }
-    .section-card .card-text { font-size: 0.93rem; color: var(--text-light); flex: 1; }
+    .section-card:hover .card-icon { 
+      transform: rotate(45deg) scale(1.1); 
+      background: var(--gold); border-color: var(--gold); color: var(--bg); 
+    }
+
+    .card-content { margin-top: 3rem; }
     
-    /* Общая стрелочка */
-    .card-arrow {
-      align-self: flex-end; font-size: 1.2rem; color: var(--gold-dim);
-      transition: transform 0.2s, color 0.2s; line-height: 1;
-      margin-top: auto;
+    .card-title {
+      font-family: var(--font-serif);
+      font-size: 2.5rem; line-height: 1.1; font-weight: 400;
+      margin-bottom: 1rem;
+      transition: color 0.3s;
     }
-    .section-card[href]:hover .card-arrow,
-    .section-card[href]:focus-visible .card-arrow,
-    a.gallery-card:hover .card-arrow,
-    a.gallery-card:focus-visible .card-arrow {
-      transform: translateX(4px); color: var(--gold);
+    .section-card:hover .card-title { color: var(--gold-light); }
+    
+    .card-text {
+      font-family: var(--font-display);
+      font-size: 1rem; color: var(--text-muted); line-height: 1.6; font-weight: 400;
     }
 
-    .sections-status {
-      grid-column: 1 / -1; padding: 1.5rem 0;
-      color: var(--text-muted); font-style: italic; font-size: 0.95rem;
-    }
-    .sections-status.is-error { color: #e0a0a0; }
-
-    /* Галерея */
+    /* --- Галерея (Асимметричная) --- */
     .gallery-grid {
-      display: grid; 
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 2rem;
     }
 
     .gallery-card {
-      background: var(--bg-card); 
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius); 
-      overflow: hidden;
-      display: flex; 
-      flex-direction: column;
-      transition: border-color 0.25s, transform 0.2s;
-      text-decoration: none;
-      color: inherit;
+      grid-column: span 6; /* По умолчанию половина */
+      display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
+      background: var(--surface);
     }
     
-    a.gallery-card:hover {
-      border-color: var(--border-strong);
-      transform: translateY(-2px);
-    }
-    a.gallery-card:focus-visible {
-      outline: 2px solid var(--gold);
-      outline-offset: 3px;
-    }
+    /* Создаем асимметрию для разных карточек, если их много */
+    .gallery-card:nth-child(3n+1) { grid-column: span 8; }
+    .gallery-card:nth-child(3n+2) { grid-column: span 4; }
+    .gallery-card:nth-child(3n+3) { grid-column: span 5; }
+    .gallery-card:nth-child(3n+4) { grid-column: span 7; }
 
     .gallery-img-wrapper {
-      width: 100%;
-      height: 220px;
-      overflow: hidden;
-      background-color: #0d1c33;
+      width: 100%; height: 100%; min-height: 400px;
+      overflow: hidden; position: relative;
+      filter: grayscale(100%) contrast(1.2);
+      transition: filter 0.6s var(--ease-expo);
     }
-
+    
+    .gallery-card:hover .gallery-img-wrapper { filter: grayscale(0%) contrast(1); }
+    
     .gallery-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s;
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.8s var(--ease-expo);
     }
+    .gallery-card:hover .gallery-img { transform: scale(1.05); }
 
-    a.gallery-card:hover .gallery-img {
-      transform: scale(1.05);
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 60%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 3rem;
+      transform: translateY(20px); opacity: 0;
+      transition: transform 0.5s var(--ease-expo), opacity 0.5s;
     }
-
-    .gallery-content {
-      padding: 1rem 1.25rem 1.25rem;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
+    .gallery-card:hover .gallery-overlay { transform: translateY(0); opacity: 1; }
 
     .gallery-title {
-      font-family: var(--font-display);
-      font-size: 1.25rem;
+      font-family: var(--font-serif);
+      font-size: 2.5rem; line-height: 1.1; margin-bottom: 0.5rem;
       color: var(--gold-light);
-      margin-bottom: 0.25rem;
-      transition: color 0.2s;
+    }
+    .gallery-text { font-family: var(--font-display); font-size: 0.95rem; color: #ccc; max-width: 80%; }
+    
+    .gallery-arrow {
+      position: absolute; bottom: 3rem; right: 3rem;
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 1px solid var(--gold); color: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      transform: scale(0); transition: transform 0.4s var(--ease-expo);
+    }
+    .gallery-card:hover .gallery-arrow { transform: scale(1); }
+
+    /* Статусы */
+    .sections-status {
+      grid-column: 1 / -1; padding: 4rem; text-align: center;
+      font-family: var(--font-display); font-size: 1.2rem; color: var(--text-muted);
+      border: 1px dashed var(--border);
     }
 
-    a.gallery-card:hover .gallery-title {
-      color: var(--gold-bright);
+    /* --- Подвал --- */
+    .footer {
+      padding: 4rem 4vw; display: flex; justify-content: space-between;
+      font-family: var(--font-display); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--text-muted);
     }
 
-    .gallery-text {
-      font-size: 0.9rem;
-      color: var(--text-light);
-      flex: 1;
+    /* --- Адаптив --- */
+    @media (max-width: 1024px) {
+      .gallery-card { grid-column: span 12 !important; min-height: 300px; }
+      .gallery-img-wrapper { min-height: 300px; }
+      .gallery-overlay { opacity: 1; transform: translateY(0); background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); }
+      .gallery-arrow { display: none; }
     }
 
-    /* Подвал */
-    .site-footer {
-      border-top: 1px solid var(--border-subtle);
-      padding: 1.75rem 1.25rem; text-align: center;
-      font-size: 0.85rem; color: var(--text-muted);
-    }
-
-    /* Адаптив */
-    @media (max-width: 900px) {
-      .about-grid, .hero-inner { grid-template-columns: 1fr; }
-      .hero-art { display: none; }
-    }
-    @media (max-width: 760px) {
-      .nav-toggle { display: block; }
-      .site-nav {
-        position: absolute; top: 100%; left: 0; right: 0;
-        background: rgba(10, 22, 40, 0.98);
-        border-bottom: 1px solid var(--border-subtle);
-        display: none; padding: 0.75rem 1.25rem 1.25rem;
-      }
-      .site-nav.is-open { display: block; }
-      .site-nav ul { flex-direction: column; gap: 0.5rem; }
-      .site-nav a { display: block; padding: 0.6rem 0; font-size: 1rem; border-bottom: 1px solid var(--border-subtle); }
-      .site-nav a:last-child { border-bottom: none; }
-    }
-    @media (max-width: 620px) {
-      .cycle-item { grid-template-columns: 1fr; gap: 0.5rem; }
-      .sections-grid, .gallery-grid { grid-template-columns: 1fr; }
-      .section-header { align-items: center; }
-      .refresh-btn { font-size: 0.82rem; padding: 0.45rem 0.8rem; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
-      .refresh-btn.is-loading .refresh-icon { animation: none; }
+    @media (max-width: 768px) {
+      html, body, a, button { cursor: auto; } /* Отключаем кастомный курсор на мобильных */
+      .cursor, .cursor-outline { display: none; }
+      
+      .nav { display: none; }
+      .btn-menu { display: block; }
+      
+      .sections-grid { grid-template-columns: 1fr; }
+      .section-card { padding: 2rem; min-height: 300px; }
+      
+      .hero-title { font-size: 4rem; }
+      .hero-meta { flex-direction: column; gap: 1rem; }
+      
+      .section-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+      .section-title { font-size: 3.5rem; }
+      
+      .gallery-overlay { padding: 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="logo"><span>Рождественский календарь</span></a>
-      <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav">Меню</button>
-      <nav class="site-nav" id="main-nav" aria-label="Основная навигация">
-        <ul>
-          <li><a href="calendar.html">Календарь</a></li>
-          <li><a href="tradition.html">О традиции</a></li>
-          <li><a href="tasks.html">Задания</a></li>
-          <li><a href="recipes.html">Рецепты</a></li>
-          <li><a href="#sections">Разделы</a></li>
-          <li><a href="#gallery">Галерея</a></li>
-          <li><a href="contacts.html">Контакты</a></li>
-        </ul>
-      </nav>
-    </div>
+  <div class="cursor"></div>
+  <div class="cursor-outline"></div>
+
+  <header class="header">
+    <a href="index.html" class="logo">РК.</a>
+    <nav class="nav">
+      <a href="calendar.html" data-text="Календарь"><span>Календарь</span></a>
+      <a href="tradition.html" data-text="О традиции"><span>О традиции</span></a>
+      <a href="tasks.html" data-text="Задания"><span>Задания</span></a>
+      <a href="recipes.html" data-text="Рецепты"><span>Рецепты</span></a>
+      <a href="#sections" data-text="Разделы"><span>Разделы</span></a>
+      <a href="#gallery" data-text="Галерея"><span>Галерея</span></a>
+    </nav>
+    <button class="btn-menu">МЕНЮ</button>
   </header>
 
   <main>
+    <!-- Hero: Типографическая инсталляция -->
     <section class="hero">
-      <div class="hero-inner">
-        <div class="hero-text">
-          <p class="eyebrow">Православная традиция · новый стиль</p>
-          <h1>Рождественский календарь</h1>
-          <p class="hero-subtitle">Двадцать четыре дня — от 14 декабря до сочельника. Памяти святых, постные рецепты, семейные задания и главные праздники цикла.</p>
-          <div class="hero-actions">
-            <a href="calendar.html" class="btn btn-primary">Открыть календарь</a>
-            <a href="tradition.html" class="btn btn-ghost">О традиции</a>
-          </div>
-        </div>
-        <div class="hero-art" aria-hidden="true">
-          <svg class="rosette" viewBox="0 0 200 200" focusable="false">
-            <circle cx="100" cy="100" r="92"/>
-            <circle cx="100" cy="100" r="26"/>
-            <circle class="rosette-core" cx="100" cy="100" r="4"/>
-            <line x1="192" y1="100" x2="126" y2="100"/>
-            <line x1="165.05" y1="165.05" x2="118.38" y2="118.38"/>
-            <line x1="100" y1="192" x2="100" y2="126"/>
-            <line x1="34.95" y1="165.05" x2="81.62" y2="118.38"/>
-            <line x1="8" y1="100" x2="74" y2="100"/>
-            <line x1="34.95" y1="34.95" x2="81.62" y2="81.62"/>
-            <line x1="100" y1="8" x2="100" y2="74"/>
-            <line x1="165.05" y1="34.95" x2="118.38" y2="81.62"/>
-          </svg>
-        </div>
+      <h1 class="hero-title">
+        <span class="line-1">Рождествен-</span>
+        <span class="line-2">ский</span>
+      </h1>
+      <div class="hero-meta">
+        <span>24 дня ожидания</span>
+        <span>14 декабря — 6 января</span>
+        <span>Новый стиль</span>
       </div>
     </section>
 
-    <section class="section">
-      <div class="section-inner about-grid">
-        <div class="about-text">
-          <h2>О календаре</h2>
-          <p>Календарь начинается 14 декабря и заканчивается в сочельник — 6 января. Двадцать четыре дня, в которые Церковь вспоминает святых, готовится к Рождеству и входит в него.</p>
-          <p>Каждый день — карточка: дата, память святого или праздник, короткое пояснение и один практический элемент. Где-то это традиция, где-то задание для семьи, где-то постный рецепт.</p>
-          <p>Мы держимся нового стиля. Православная традиция здесь не смешана с западной: нет Санта-Клауса, оленей и «Xmas». Только Рождественский пост, Введение во храм, Никола Зимний, сочельник, Рождество, Святки и Крещение.</p>
-        </div>
-        <aside class="about-aside">
-          <div class="aside-row">
-            <span class="aside-label">Рождественский пост</span>
-            <span class="aside-value">28 ноября — 6 января</span>
-          </div>
-          <div class="aside-row">
-            <span class="aside-label">Календарь</span>
-            <span class="aside-value">14 декабря — 6 января</span>
-          </div>
-          <div class="aside-row">
-            <span class="aside-label">Святки</span>
-            <span class="aside-value">7 — 17 января</span>
-          </div>
-          <div class="aside-row">
-            <span class="aside-label">Крещение Господне</span>
-            <span class="aside-value">19 января</span>
-          </div>
-        </aside>
+    <!-- Секция Разделы: Монолитная сетка -->
+    <section class="content-section" id="sections">
+      <div class="section-header">
+        <h2 class="section-title">Разделы</h2>
+        <button class="refresh-btn" id="refresh-sections-btn" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9c2.5 0 4.8 1 6.5 2.5L21 8"/><path d="M21 3v5h-5"/></svg>
+          <span class="refresh-label">Обновить</span>
+        </button>
+      </div>
+      <div class="sections-grid" id="sections-grid">
+        <p class="sections-status">Загрузка данных…</p>
       </div>
     </section>
 
-    <section class="section section-alt">
-      <div class="section-inner">
-        <h2>Главные дни цикла</h2>
-        <ol class="cycle-list">
-          <li class="cycle-item">
-            <div class="cycle-date">28 ноября</div>
-            <div class="cycle-content">
-              <h3>Начало Рождественского поста</h3>
-              <p>Сорок дней воздержания и внимания к душе. Пост называется также Филипповым — по дню памяти апостола Филиппа, на который приходится заговенье.</p>
-            </div>
-          </li>
-          <li class="cycle-item">
-            <div class="cycle-date">4 декабря</div>
-            <div class="cycle-content">
-              <h3>Введение во храм Пресвятой Богородицы</h3>
-              <p>Трёхлетняя Дева Мария была приведена родителями в Иерусалимский храм и осталась там, чтобы служить Богу. Праздник говорит о встрече человека с храмом.</p>
-            </div>
-          </li>
-          <li class="cycle-item">
-            <div class="cycle-date">19 декабря</div>
-            <div class="cycle-content">
-              <h3>Никола Зимний</h3>
-              <p>Память святителя Николая, архиепископа Мир Ликийских. Один из самых любимых на Руси праздников — день милосердия, помощи и тихой радости.</p>
-            </div>
-          </li>
-          <li class="cycle-item">
-            <div class="cycle-date">6 января</div>
-            <div class="cycle-content">
-              <h3>Рождественский сочельник</h3>
-              <p>Последний день поста и канун Рождества. По уставу вкушают сочиво — пшеницу с мёдом и маком. Вечером совершается всенощное бдение.</p>
-            </div>
-          </li>
-          <li class="cycle-item">
-            <div class="cycle-date">7 января</div>
-            <div class="cycle-content">
-              <h3>Рождество Христово</h3>
-              <p>Главный праздник цикла. Церковь празднует рождение Спасителя, и сорокадневный пост сменяется двенадцатидневным торжеством.</p>
-            </div>
-          </li>
-          <li class="cycle-item">
-            <div class="cycle-date">7 — 17 января</div>
-            <div class="cycle-content">
-              <h3>Святки</h3>
-              <p>Святые дни между Рождеством и Крещением. Время колядок, семейного общения и дел милосердия. Гадания Церковь не благословляет.</p>
-            </div>
-          </li>
-          <li class="cycle-item">
-            <div class="cycle-date">19 января</div>
-            <div class="cycle-content">
-              <h3>Крещение Господне</h3>
-              <p>Праздник Богоявления. Вспоминается крещение Христа в Иордане и освящение воды. Святки завершаются.</p>
-            </div>
-          </li>
-        </ol>
+    <!-- Секция Галерея: Асимметричные образы -->
+    <section class="content-section" id="gallery">
+      <div class="section-header">
+        <h2 class="section-title">Галерея</h2>
+        <button class="refresh-btn" id="refresh-gallery-btn" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9c2.5 0 4.8 1 6.5 2.5L21 8"/><path d="M21 3v5h-5"/></svg>
+          <span class="refresh-label">Обновить</span>
+        </button>
       </div>
-    </section>
-
-    <section class="quote-banner" aria-label="Цитата из канона Рождества">
-      <div class="quote-inner">
-        <div class="ornament-divider" aria-hidden="true"></div>
-        <blockquote>
-          <p>«Христос рождается — славите!»</p>
-          <cite>Из канона Рождества Христова</cite>
-        </blockquote>
-        <div class="ornament-divider" aria-hidden="true"></div>
-      </div>
-    </section>
-
-    <section class="section section-alt" id="sections">
-      <div class="section-inner">
-        <div class="section-header">
-          <h2>Разделы</h2>
-          <button class="refresh-btn" id="refresh-sections-btn" type="button" aria-busy="false" aria-label="Обновить разделы">
-            <svg class="refresh-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <polyline points="23 4 23 10 17 10"></polyline>
-              <polyline points="1 20 1 14 7 14"></polyline>
-              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-            </svg>
-            <span class="refresh-label" aria-live="polite">Обновить</span>
-          </button>
-        </div>
-        <div class="sections-grid" id="sections-grid">
-          <p class="sections-status">Загрузка разделов…</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="gallery">
-      <div class="section-inner">
-        <div class="section-header">
-          <h2>Галерея</h2>
-          <button class="refresh-btn" id="refresh-gallery-btn" type="button" aria-busy="false" aria-label="Обновить галерею">
-            <svg class="refresh-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <polyline points="23 4 23 10 17 10"></polyline>
-              <polyline points="1 20 1 14 7 14"></polyline>
-              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-            </svg>
-            <span class="refresh-label" aria-live="polite">Обновить</span>
-          </button>
-        </div>
-        <div class="gallery-grid" id="gallery-grid">
-          <p class="sections-status">Загрузка галереи…</p>
-        </div>
+      <div class="gallery-grid" id="gallery-grid">
+        <p class="sections-status">Загрузка образов…</p>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <p>Рождественский календарь. Даты даны по новому стилю.</p>
+  <footer class="footer">
+    <span>Рождественский календарь</span>
+    <span>&copy; <span id="year"></span> / Православная традиция</span>
   </footer>
 
   <script>
-    (function () {
-      /* Мобильное меню */
-      const navToggle = document.querySelector('.nav-toggle');
-      const siteNav = document.querySelector('.site-nav');
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-      navToggle.addEventListener('click', function () {
-        const isOpen = siteNav.classList.toggle('is-open');
-        navToggle.setAttribute('aria-expanded', String(isOpen));
+    // Кастомный курсор
+    const cursor = document.querySelector('.cursor');
+    const cursorOutline = document.querySelector('.cursor-outline');
+    
+    if (window.matchMedia("(pointer: fine)").matches) {
+      let mouseX = 0, mouseY = 0;
+      let outlineX = 0, outlineY = 0;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX; mouseY = e.clientY;
+        cursor.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
       });
 
-      siteNav.querySelectorAll('a').forEach(function (link) {
-        link.addEventListener('click', function () {
-          siteNav.classList.remove('is-open');
-          navToggle.setAttribute('aria-expanded', 'false');
+      function animateOutline() {
+        outlineX += (mouseX - outlineX) * 0.15;
+        outlineY += (mouseY - outlineY) * 0.15;
+        cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px) translate(-50%, -50%)`;
+        requestAnimationFrame(animateOutline);
+      }
+      animateOutline();
+
+      // Эффект при наведении на интерактивные элементы
+      const hoverElements = document.querySelectorAll('a, button, .section-card, .gallery-card');
+      hoverElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          cursor.style.width = '40px'; cursor.style.height = '40px';
+          cursorOutline.style.width = '60px'; cursorOutline.style.height = '60px';
+          cursorOutline.style.borderColor = 'rgba(212, 175, 55, 0.8)';
+        });
+        el.addEventListener('mouseleave', () => {
+          cursor.style.width = '12px'; cursor.style.height = '12px';
+          cursorOutline.style.width = '40px'; cursorOutline.style.height = '40px';
+          cursorOutline.style.borderColor = 'rgba(212, 175, 55, 0.4)';
         });
       });
+    }
 
-      /* ================= ОБЩИЕ УТИЛИТЫ ================= */
+    (function () {
+      /* ================= ЛОГИКА ЗАГРУЗКИ ДАННЫХ ================= */
       const PROXIES = [
         'https://api.allorigins.win/raw?url=',
         'https://api.codetabs.com/v1/proxy?quest='
       ];
-      const REFRESH_COOLDOWN_MS = 4000;
+      const REFRESH_COOLDOWN_MS = 3000;
       const DONE_TEXT_MS = 1500;
 
       function parseCSV(text) {
-        const rows = [];
-        let row = [];
-        let field = '';
-        let inQuotes = false;
+        const rows = []; let row = []; let field = ''; let inQuotes = false;
         for (let i = 0; i < text.length; i++) {
-          const char = text[i];
-          const next = text[i + 1];
+          const char = text[i]; const next = text[i + 1];
           if (inQuotes) {
             if (char === '"' && next === '"') { field += '"'; i++; }
             else if (char === '"') { inQuotes = false; }
@@ -647,8 +494,7 @@
         try {
           const directRes = await fetch(url, { cache: 'no-store' });
           if (directRes.ok) return await directRes.text();
-        } catch (e) { /* Игнорируем CORS */ }
-
+        } catch (e) { /* CORS */ }
         let lastError = null;
         for (const proxy of PROXIES) {
           try {
@@ -656,292 +502,128 @@
             if (response.ok) {
               const text = await response.text();
               if (text.trim().toLowerCase().startsWith('<!doctype html') || text.trim().toLowerCase().startsWith('<html')) {
-                throw new Error('Прокси вернул HTML вместо CSV');
+                throw new Error('Proxy error');
               }
               return text;
             }
             lastError = new Error(`HTTP ${response.status}`);
-          } catch (e) {
-            lastError = e;
-          }
+          } catch (e) { lastError = e; }
         }
-        throw lastError || new Error('Все способы загрузки недоступны');
+        throw lastError || new Error('Load failed');
       }
 
-      /* ================= ЛОГИКА КНОПКИ ================= */
-      function setupButton(btn, labelEl) {
-        let cooldownTimer = null;
-        let doneTextTimer = null;
-
-        function clearTimers() {
-          if (cooldownTimer) { clearTimeout(cooldownTimer); cooldownTimer = null; }
-          if (doneTextTimer) { clearTimeout(doneTextTimer); doneTextTimer = null; }
-        }
-
-        function setState(state) {
-          if (state === 'loading') {
-            btn.classList.add('is-loading');
-            btn.disabled = true;
-            btn.setAttribute('aria-busy', 'true');
-            labelEl.textContent = 'Загрузка…';
-          } else if (state === 'done') {
-            btn.classList.remove('is-loading');
-            btn.disabled = true;
-            btn.setAttribute('aria-busy', 'false');
-            labelEl.textContent = 'Обновлено';
-          } else if (state === 'error') {
-            btn.classList.remove('is-loading');
-            btn.disabled = true;
-            btn.setAttribute('aria-busy', 'false');
-            labelEl.textContent = 'Ошибка';
-          } else {
-            btn.classList.remove('is-loading');
-            btn.disabled = false;
-            btn.setAttribute('aria-busy', 'false');
-            labelEl.textContent = 'Обновить';
-          }
-        }
-
+      function setupButton(btn) {
+        const label = btn.querySelector('.refresh-label');
+        let timer = null;
         return {
-          setLoading: () => setState('loading'),
-          finish(succeeded) {
-            clearTimers();
-            setState(succeeded ? 'done' : 'error');
-            if (succeeded) {
-              doneTextTimer = setTimeout(() => { labelEl.textContent = 'Обновить'; }, DONE_TEXT_MS);
-            }
-            cooldownTimer = setTimeout(() => { setState('idle'); }, REFRESH_COOLDOWN_MS);
-          },
-          reset: () => setState('idle')
+          loading: () => { btn.classList.add('is-loading'); btn.disabled = true; label.textContent = '...'; },
+          finish: (ok) => {
+            btn.classList.remove('is-loading'); label.textContent = ok ? 'OK' : 'Err';
+            setTimeout(() => { btn.disabled = false; label.textContent = 'Обновить'; }, 2000);
+          }
         };
       }
 
-      /* ================= 1. СЕКЦИЯ "РАЗДЕЛЫ" ================= */
+      /* 1. РАЗДЕЛЫ */
       const SECTIONS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTZ8ScGrpg72Ujy286RowU9xbEi8kE-BJ7jKaGAbpRBQ1JDWGzDSoOY2oC717pRF-a6vlivxqdvTvmk/pub?gid=0&single=true&output=csv';
-      
-      const sectionsGrid = document.getElementById('sections-grid');
-      const sectionsBtn = document.getElementById('refresh-sections-btn');
-      const sectionsLabel = sectionsBtn.querySelector('.refresh-label');
-      const sectionsControl = setupButton(sectionsBtn, sectionsLabel);
+      const sGrid = document.getElementById('sections-grid');
+      const sBtn = document.getElementById('refresh-sections-btn');
+      const sControl = setupButton(sBtn);
 
-      function renderSections(items) {
-        sectionsGrid.innerHTML = '';
-        if (!items.length) {
-          sectionsGrid.innerHTML = '<p class="sections-status">Разделы пока не добавлены.</p>';
-          return;
-        }
-        const fragment = document.createDocumentFragment();
-        items.forEach(item => {
-          const card = document.createElement(item.link ? 'a' : 'div');
-          card.className = 'section-card';
-          if (item.link) {
-            card.href = item.link;
-            card.target = '_blank';
-            card.rel = 'noopener noreferrer';
-          }
+      const SVG_ARROW = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
 
-          const dateEl = document.createElement('span');
-          dateEl.className = 'card-date';
-          dateEl.textContent = item.date;
-
-          const titleEl = document.createElement('span');
-          titleEl.className = 'card-title';
-          titleEl.textContent = item.title;
-
-          const textEl = document.createElement('span');
-          textEl.className = 'card-text';
-          textEl.textContent = item.text;
-
-          const arrowEl = document.createElement('span');
-          arrowEl.className = 'card-arrow';
-          arrowEl.setAttribute('aria-hidden', 'true');
-          arrowEl.textContent = '→';
-
-          card.appendChild(dateEl);
-          card.appendChild(titleEl);
-          card.appendChild(textEl);
-          card.appendChild(arrowEl);
-
-          if (!item.link) {
-            arrowEl.style.display = 'none';
-            card.style.cursor = 'default';
-          }
-          fragment.appendChild(card);
-        });
-        sectionsGrid.appendChild(fragment);
-      }
-
-      async function loadSections(userInitiated) {
-        if (userInitiated) sectionsControl.setLoading();
-        else sectionsGrid.innerHTML = '<p class="sections-status">Загрузка разделов…</p>';
-        
-        let succeeded = false;
+      async function loadSections(init) {
+        if (init) sControl.loading(); else sGrid.innerHTML = '<p class="sections-status">Загрузка…</p>';
+        let ok = false;
         try {
-          const cacheBuster = (SECTIONS_URL.includes('?') ? '&' : '?') + '_=' + Date.now();
-          const csvText = await fetchWithProxy(SECTIONS_URL + cacheBuster);
-          const rows = parseCSV(csvText);
-          if (rows.length < 2) throw new Error('В таблице нет данных.');
-
-          const header = rows[0].map(c => c.trim().toLowerCase().replace(/\s+/g, ''));
+          const res = await fetchWithProxy(SECTIONS_URL + '&_=' + Date.now());
+          const rows = parseCSV(res);
+          const h = rows[0].map(c => c.trim().toLowerCase().replace(/\s+/g, ''));
+          const idx = { o: h.indexOf('порядок'), d: h.indexOf('дата'), t: h.indexOf('заголовок'), x: h.indexOf('текст'), l: h.indexOf('ссылка'), a: h.indexOf('активность') };
           
-          const orderIdx = header.indexOf('порядок');
-          const dateIdx = header.indexOf('дата');
-          const titleIdx = header.indexOf('заголовок');
-          const textIdx = header.indexOf('текст');
-          const linkIdx = header.indexOf('ссылка');
-          const activeIdx = header.indexOf('активность');
+          if (Object.values(idx).includes(-1)) throw new Error('Columns missing');
 
-          if (orderIdx === -1 || dateIdx === -1 || titleIdx === -1 || textIdx === -1 || activeIdx === -1) {
-            throw new Error('Не найдены нужные столбцы в таблице разделов.');
-          }
+          const items = rows.slice(1).map(r => ({
+            o: parseInt(r[idx.o], 10), d: r[idx.d]?.trim() || '', t: r[idx.t]?.trim() || '', 
+            x: r[idx.x]?.trim() || '', l: r[idx.l]?.trim() || '', a: isActive(r[idx.a])
+          })).filter(i => i.a && i.t && !isNaN(i.o)).sort((a,b) => a.o - b.o);
 
-          const items = rows.slice(1)
-            .map(row => ({
-              order: parseInt(row[orderIdx], 10),
-              date: row[dateIdx] ? row[dateIdx].trim() : '',
-              title: row[titleIdx] ? row[titleIdx].trim() : '',
-              text: row[textIdx] ? row[textIdx].trim() : '',
-              link: linkIdx !== -1 && row[linkIdx] ? row[linkIdx].trim() : '',
-              active: isActive(row[activeIdx])
-            }))
-            .filter(item => item.active && item.title && !isNaN(item.order))
-            .sort((a, b) => a.order - b.order);
-
-          renderSections(items);
-          succeeded = true;
-        } catch (error) {
-          console.error('Ошибка разделов:', error);
-          sectionsGrid.innerHTML = `<p class="sections-status is-error">Не удалось загрузить разделы. ${error.message}</p>`;
+          sGrid.innerHTML = '';
+          items.forEach(item => {
+            const el = document.createElement(item.l ? 'a' : 'div');
+            el.className = 'section-card';
+            if (item.l) { el.href = item.l; el.target = '_blank'; el.rel = 'noopener noreferrer'; }
+            
+            el.innerHTML = `
+              <div class="card-top">
+                <span class="card-date">${item.d}</span>
+                <div class="card-icon">${item.l ? SVG_ARROW : '·'}</div>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">${item.t}</h3>
+                <p class="card-text">${item.x}</p>
+              </div>
+            `;
+            sGrid.appendChild(el);
+          });
+          ok = true;
+        } catch (e) {
+          sGrid.innerHTML = `<p class="sections-status">Ошибка: ${e.message}</p>`;
         }
-
-        if (userInitiated) sectionsControl.finish(succeeded);
-        else sectionsControl.reset();
+        if (init) sControl.finish(ok);
       }
-
-      sectionsBtn.addEventListener('click', () => loadSections(true));
+      sBtn.addEventListener('click', () => loadSections(true));
       loadSections(false);
 
-      /* ================= 2. СЕКЦИЯ "ГАЛЕРЕЯ" ================= */
+      /* 2. ГАЛЕРЕЯ */
       const GALLERY_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRmxQh-ENRcryK8b-QygpiSDkqGxWZizs5GVB6J2wmB15Q5fBNZfUm1BU1fnPcKemugZ2arT3hx9Dqn/pub?gid=0&single=true&output=csv';
-      
-      const galleryGrid = document.getElementById('gallery-grid');
-      const galleryBtn = document.getElementById('refresh-gallery-btn');
-      const galleryLabel = galleryBtn.querySelector('.refresh-label');
-      const galleryControl = setupButton(galleryBtn, galleryLabel);
+      const gGrid = document.getElementById('gallery-grid');
+      const gBtn = document.getElementById('refresh-gallery-btn');
+      const gControl = setupButton(gBtn);
 
-      function renderGallery(items) {
-        galleryGrid.innerHTML = '';
-        if (!items.length) {
-          galleryGrid.innerHTML = '<p class="sections-status">В галерее пока нет картинок.</p>';
-          return;
-        }
-        const fragment = document.createDocumentFragment();
-        items.forEach(item => {
-          const card = document.createElement(item.link ? 'a' : 'div');
-          card.className = 'gallery-card';
-          
-          if (item.link) {
-            card.href = item.link;
-            card.target = '_blank';
-            card.rel = 'noopener noreferrer';
-          }
-
-          const imgWrapper = document.createElement('div');
-          imgWrapper.className = 'gallery-img-wrapper';
-          
-          const img = document.createElement('img');
-          img.className = 'gallery-img';
-          img.src = item.imageLink;
-          img.alt = item.title || 'Изображение галереи';
-          img.loading = 'lazy'; 
-          
-          imgWrapper.appendChild(img);
-          card.appendChild(imgWrapper);
-
-          const content = document.createElement('div');
-          content.className = 'gallery-content';
-
-          if (item.title) {
-            const title = document.createElement('h3');
-            title.className = 'gallery-title';
-            title.textContent = item.title;
-            content.appendChild(title);
-          }
-
-          if (item.text) {
-            const text = document.createElement('p');
-            text.className = 'gallery-text';
-            text.textContent = item.text;
-            content.appendChild(text);
-          }
-
-          // Добавляем стрелочку только если есть ссылка
-          if (item.link) {
-            const arrowEl = document.createElement('span');
-            arrowEl.className = 'card-arrow';
-            arrowEl.setAttribute('aria-hidden', 'true');
-            arrowEl.textContent = '→';
-            content.appendChild(arrowEl);
-          }
-
-          card.appendChild(content);
-          fragment.appendChild(card);
-        });
-        galleryGrid.appendChild(fragment);
-      }
-
-      async function loadGallery(userInitiated) {
-        if (userInitiated) galleryControl.setLoading();
-        else galleryGrid.innerHTML = '<p class="sections-status">Загрузка галереи…</p>';
-        
-        let succeeded = false;
+      async function loadGallery(init) {
+        if (init) gControl.loading(); else gGrid.innerHTML = '<p class="sections-status">Загрузка…</p>';
+        let ok = false;
         try {
-          const cacheBuster = (GALLERY_URL.includes('?') ? '&' : '?') + '_=' + Date.now();
-          const csvText = await fetchWithProxy(GALLERY_URL + cacheBuster);
-          const rows = parseCSV(csvText);
-          if (rows.length < 2) throw new Error('В таблице нет данных.');
-
-          const header = rows[0].map(c => c.trim().toLowerCase().replace(/\s+/g, ''));
+          const res = await fetchWithProxy(GALLERY_URL + '&_=' + Date.now());
+          const rows = parseCSV(res);
+          const h = rows[0].map(c => c.trim().toLowerCase().replace(/\s+/g, ''));
+          const idx = { o: h.indexOf('порядок'), t: h.indexOf('заголовок'), x: h.indexOf('текст'), i: h.indexOf('ссылкакартинка'), l: h.indexOf('ссылка'), a: h.indexOf('активность') };
           
-          const orderIdx = header.indexOf('порядок');
-          const titleIdx = header.indexOf('заголовок');
-          const textIdx = header.indexOf('текст');
-          const imageLinkIdx = header.indexOf('ссылкакартинка');
-          const linkIdx = header.indexOf('ссылка');
-          const activeIdx = header.indexOf('активность');
+          if (idx.o === -1 || idx.i === -1 || idx.a === -1) throw new Error('Columns missing');
 
-          if (orderIdx === -1 || titleIdx === -1 || textIdx === -1 || imageLinkIdx === -1 || activeIdx === -1) {
-            throw new Error('Не найдены нужные столбцы в таблице галереи.');
-          }
+          const items = rows.slice(1).map(r => ({
+            o: parseInt(r[idx.o], 10), t: r[idx.t]?.trim() || '', x: r[idx.x]?.trim() || '', 
+            i: r[idx.i]?.trim() || '', l: r[idx.l]?.trim() || '', a: isActive(r[idx.a])
+          })).filter(i => i.a && i.i && !isNaN(i.o)).sort((a,b) => a.o - b.o);
 
-          const items = rows.slice(1)
-            .map(row => ({
-              order: parseInt(row[orderIdx], 10),
-              title: row[titleIdx] ? row[titleIdx].trim() : '',
-              text: row[textIdx] ? row[textIdx].trim() : '',
-              imageLink: row[imageLinkIdx] ? row[imageLinkIdx].trim() : '',
-              link: linkIdx !== -1 && row[linkIdx] ? row[linkIdx].trim() : '',
-              active: isActive(row[activeIdx])
-            }))
-            .filter(item => item.active && item.imageLink && !isNaN(item.order))
-            .sort((a, b) => a.order - b.order);
+          gGrid.innerHTML = '';
+          items.forEach(item => {
+            const el = document.createElement(item.l ? 'a' : 'div');
+            el.className = 'gallery-card';
+            if (item.l) { el.href = item.l; el.target = '_blank'; el.rel = 'noopener noreferrer'; }
 
-          renderGallery(items);
-          succeeded = true;
-        } catch (error) {
-          console.error('Ошибка галереи:', error);
-          galleryGrid.innerHTML = `<p class="sections-status is-error">Не удалось загрузить галерею. ${error.message}</p>`;
+            el.innerHTML = `
+              <div class="gallery-img-wrapper">
+                <img class="gallery-img" src="${item.i}" alt="${item.t}" loading="lazy">
+              </div>
+              <div class="gallery-overlay">
+                <h3 class="gallery-title">${item.t}</h3>
+                <p class="gallery-text">${item.x}</p>
+                ${item.l ? `<div class="gallery-arrow">${SVG_ARROW}</div>` : ''}
+              </div>
+            `;
+            gGrid.appendChild(el);
+          });
+          ok = true;
+        } catch (e) {
+          gGrid.innerHTML = `<p class="sections-status">Ошибка: ${e.message}</p>`;
         }
-
-        if (userInitiated) galleryControl.finish(succeeded);
-        else galleryControl.reset();
+        if (init) gControl.finish(ok);
       }
-
-      galleryBtn.addEventListener('click', () => loadGallery(true));
+      gBtn.addEventListener('click', () => loadGallery(true));
       loadGallery(false);
-
     })();
   </script>
-
 </body>
 </html>
