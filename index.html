@@ -245,10 +245,14 @@
     .section-card:hover { border-color: var(--border-strong); background: #1e3460; }
     .section-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
     .section-card[href] { cursor: pointer; }
-    .section-card .card-order {
-      font-family: var(--font-display); font-size: 0.85rem;
-      color: var(--gold-dim); letter-spacing: 0.1em; margin-bottom: 0.15rem;
+    
+    /* Новый класс для даты */
+    .section-card .card-date {
+      font-family: var(--font-display); font-size: 0.95rem;
+      color: var(--gold-dim); letter-spacing: 0.05em; margin-bottom: 0.15rem;
+      text-transform: uppercase;
     }
+    
     .section-card .card-title {
       font-family: var(--font-display); font-size: 1.35rem;
       color: var(--gold-light); line-height: 1.2;
@@ -597,9 +601,10 @@
           card.className = 'section-card';
           if (item.link) card.href = item.link;
 
-          const orderEl = document.createElement('span');
-          orderEl.className = 'card-order';
-          orderEl.textContent = String(item.order).padStart(2, '0');
+          // Дата вместо порядкового номера
+          const dateEl = document.createElement('span');
+          dateEl.className = 'card-date';
+          dateEl.textContent = item.date;
 
           const titleEl = document.createElement('span');
           titleEl.className = 'card-title';
@@ -614,7 +619,7 @@
           arrowEl.setAttribute('aria-hidden', 'true');
           arrowEl.textContent = '→';
 
-          card.appendChild(orderEl);
+          card.appendChild(dateEl);
           card.appendChild(titleEl);
           card.appendChild(textEl);
           card.appendChild(arrowEl);
@@ -629,22 +634,17 @@
       }
 
       async function fetchWithProxy(url) {
-        // 1. Пробуем прямой запрос (вдруг Google отдаст CORS)
         try {
           const directRes = await fetch(url, { cache: 'no-store' });
           if (directRes.ok) return await directRes.text();
-        } catch (e) {
-          // Игнорируем ошибку CORS и идем к прокси
-        }
+        } catch (e) { /* Игнорируем CORS */ }
 
-        // 2. Пробуем прокси по очереди
         let lastError = null;
         for (const proxy of PROXIES) {
           try {
             const response = await fetch(proxy + encodeURIComponent(url), { cache: 'no-store' });
             if (response.ok) {
               const text = await response.text();
-              // Проверка, что вернулся не HTML с ошибкой
               if (text.trim().toLowerCase().startsWith('<!doctype html') || text.trim().toLowerCase().startsWith('<html')) {
                 throw new Error('Прокси вернул HTML вместо CSV');
               }
@@ -671,27 +671,34 @@
           if (rows.length < 2) throw new Error('В таблице нет данных (менее двух строк).');
 
           const header = rows[0].map(cell => cell.trim().toLowerCase());
+          
+          // Ищем новые столбцы
           const orderIdx = header.indexOf('порядок');
+          const dateIdx = header.indexOf('дата');
           const titleIdx = header.indexOf('заголовок');
           const textIdx = header.indexOf('текст');
           const linkIdx = header.indexOf('ссылка');
           const activeIdx = header.indexOf('активность');
 
-          if (orderIdx === -1 || titleIdx === -1 || textIdx === -1 || activeIdx === -1) {
-            throw new Error('Не найдены нужные столбцы. Проверьте заголовки.');
+          // Проверяем, что все обязательные столбцы на месте
+          if (orderIdx === -1 || dateIdx === -1 || titleIdx === -1 || textIdx === -1 || activeIdx === -1) {
+            throw new Error('Не найдены нужные столбцы. Проверьте заголовки в таблице.');
           }
 
           const items = rows.slice(1)
             .map(function (row) {
               return {
                 order: parseInt(row[orderIdx], 10),
+                date: row[dateIdx] ? row[dateIdx].trim() : '',
                 title: row[titleIdx] ? row[titleIdx].trim() : '',
                 text: row[textIdx] ? row[textIdx].trim() : '',
                 link: linkIdx !== -1 && row[linkIdx] ? row[linkIdx].trim() : '',
                 active: isActive(row[activeIdx])
               };
             })
+            // Фильтруем выключенные и пустые
             .filter(item => item.active && item.title && !isNaN(item.order))
+            // Сортируем по столбцу "Порядок"
             .sort((a, b) => a.order - b.order);
 
           renderSections(items);
