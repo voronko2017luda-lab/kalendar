@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Православный рождественский календарь: 24 дня от 14 декабря до сочельника. Памяти святых, постные рецепты, семейные задания и главные праздники цикла.">
+  <meta name="description" content="Православный рождественский календарь: 24 дня от 14 декабря до сочельника.">
   <title>Рождественский календарь — от поста до Крещения</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,19 +26,8 @@
       --radius: 3px;
     }
 
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: 80px;
-    }
-
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
     body {
       font-family: var(--font-body);
       background-color: var(--bg-deep);
@@ -53,627 +42,268 @@
       font-weight: 600;
       line-height: 1.2;
     }
-
-    h1 {
-      font-size: clamp(2.2rem, 5.5vw, 3.8rem);
-      color: var(--gold-light);
-      letter-spacing: 0.01em;
-    }
-
-    h2 {
-      font-size: clamp(1.7rem, 3.5vw, 2.4rem);
-      color: var(--gold-light);
-      margin-bottom: 1.75rem;
-      position: relative;
-    }
-
-    h2::after {
-      content: '';
-      display: block;
-      width: 48px;
-      height: 1px;
-      background: var(--gold);
-      margin-top: 0.7rem;
-    }
-
-    h3 {
-      font-size: 1.2rem;
-      color: var(--gold-light);
-      margin-bottom: 0.4rem;
-    }
-
-    a {
-      color: var(--gold-light);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    svg {
-      display: block;
-      max-width: 100%;
-    }
+    h1 { font-size: clamp(2.2rem, 5.5vw, 3.8rem); color: var(--gold-light); letter-spacing: 0.01em; }
+    h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); color: var(--gold-light); margin-bottom: 1.75rem; position: relative; }
+    h2::after { content: ''; display: block; width: 48px; height: 1px; background: var(--gold); margin-top: 0.7rem; }
+    h3 { font-size: 1.2rem; color: var(--gold-light); margin-bottom: 0.4rem; }
+    a { color: var(--gold-light); text-decoration: none; transition: color 0.2s; }
+    svg { display: block; max-width: 100%; }
 
     /* --- Шапка --- */
     .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      position: sticky; top: 0; z-index: 100;
       background: rgba(10, 22, 40, 0.92);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border-subtle);
     }
-
     .header-inner {
-      max-width: 1160px;
-      margin: 0 auto;
+      max-width: 1160px; margin: 0 auto;
       padding: 0.9rem 1.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
     }
-
     .logo {
-      font-family: var(--font-display);
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--gold-light);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      font-family: var(--font-display); font-size: 1.3rem; font-weight: 700;
+      color: var(--gold-light); letter-spacing: 0.06em; text-transform: uppercase;
     }
-
-    .logo span {
-      display: inline-block;
-      border-bottom: 1px solid var(--gold-dim);
-      padding-bottom: 0.15rem;
-    }
-
-    .logo:hover span {
-      border-bottom-color: var(--gold);
-    }
+    .logo span { display: inline-block; border-bottom: 1px solid var(--gold-dim); padding-bottom: 0.15rem; }
+    .logo:hover span { border-bottom-color: var(--gold); }
 
     .nav-toggle {
-      display: none;
-      background: none;
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius);
-      color: var(--gold-light);
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      padding: 0.4rem 0.8rem;
-      cursor: pointer;
-      transition: border-color 0.2s;
+      display: none; background: none; border: 1px solid var(--border-subtle);
+      border-radius: var(--radius); color: var(--gold-light);
+      font-family: var(--font-body); font-size: 0.95rem;
+      padding: 0.4rem 0.8rem; cursor: pointer;
     }
+    .nav-toggle:hover { border-color: var(--gold); }
 
-    .nav-toggle:hover {
-      border-color: var(--gold);
-    }
-
-    .site-nav ul {
-      display: flex;
-      gap: 1.6rem;
-      list-style: none;
-    }
-
+    .site-nav ul { display: flex; gap: 1.6rem; list-style: none; }
     .site-nav a {
-      font-size: 0.95rem;
-      letter-spacing: 0.03em;
-      color: var(--text-muted);
-      padding: 0.3rem 0;
-      border-bottom: 1px solid transparent;
-      transition: color 0.2s, border-color 0.2s;
+      font-size: 0.95rem; letter-spacing: 0.03em; color: var(--text-muted);
+      padding: 0.3rem 0; border-bottom: 1px solid transparent;
     }
-
-    .site-nav a:hover,
-    .site-nav a:focus-visible {
-      color: var(--gold-light);
-      border-bottom-color: var(--gold);
-    }
+    .site-nav a:hover, .site-nav a:focus-visible { color: var(--gold-light); border-bottom-color: var(--gold); }
 
     /* --- Главный экран --- */
     .hero {
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
       padding: clamp(3rem, 7vw, 6rem) 1.25rem clamp(2.5rem, 5vw, 4.5rem);
     }
-
     .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content: ''; position: absolute; inset: 0;
       background: radial-gradient(ellipse 70% 60% at 28% 18%, rgba(201, 162, 39, 0.07), transparent 70%);
       pointer-events: none;
     }
-
     .hero-inner {
-      position: relative;
-      max-width: 1160px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1.35fr 0.65fr;
-      gap: 2rem;
-      align-items: center;
+      position: relative; max-width: 1160px; margin: 0 auto;
+      display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 2rem; align-items: center;
     }
-
     .eyebrow {
-      font-size: 0.82rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--gold-dim);
-      margin-bottom: 1.1rem;
+      font-size: 0.82rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold-dim); margin-bottom: 1.1rem;
     }
-
     .hero-subtitle {
       font-size: clamp(1.05rem, 1.6vw, 1.2rem);
-      color: var(--text-muted);
-      margin-top: 1.25rem;
-      max-width: 34em;
+      color: var(--text-muted); margin-top: 1.25rem; max-width: 34em;
     }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
     .btn {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.85rem 1.6rem;
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      letter-spacing: 0.04em;
-      border-radius: var(--radius);
-      border: 1px solid;
+      display: inline-flex; align-items: center;
+      padding: 0.85rem 1.6rem; font-family: var(--font-body);
+      font-size: 0.95rem; letter-spacing: 0.04em;
+      border-radius: var(--radius); border: 1px solid;
       transition: background 0.2s, color 0.2s, border-color 0.2s;
     }
-
     .btn-primary {
-      background: var(--gold);
-      color: var(--bg-deep);
-      border-color: var(--gold);
-      font-weight: 700;
+      background: var(--gold); color: var(--bg-deep);
+      border-color: var(--gold); font-weight: 700;
     }
-
-    .btn-primary:hover,
-    .btn-primary:focus-visible {
-      background: var(--gold-light);
-      border-color: var(--gold-light);
-      color: var(--bg-deep);
+    .btn-primary:hover, .btn-primary:focus-visible {
+      background: var(--gold-light); border-color: var(--gold-light);
     }
-
     .btn-ghost {
-      background: transparent;
-      color: var(--gold-light);
+      background: transparent; color: var(--gold-light);
       border-color: var(--border-strong);
     }
-
-    .btn-ghost:hover,
-    .btn-ghost:focus-visible {
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-
-    .btn:focus-visible {
-      outline: 2px solid var(--gold);
-      outline-offset: 3px;
-    }
+    .btn-ghost:hover, .btn-ghost:focus-visible { border-color: var(--gold); color: var(--gold); }
+    .btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
     .hero-art {
-      justify-self: center;
-      width: 100%;
-      max-width: 280px;
-      color: var(--gold);
-      opacity: 0.5;
+      justify-self: center; width: 100%; max-width: 280px;
+      color: var(--gold); opacity: 0.5;
     }
-
-    .rosette {
-      width: 100%;
-      height: auto;
-    }
-
-    .rosette line,
-    .rosette circle {
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 0.9;
-    }
-
-    .rosette-core {
-      fill: currentColor;
-      stroke: none;
-    }
+    .rosette { width: 100%; height: auto; }
+    .rosette line, .rosette circle { stroke: currentColor; fill: none; stroke-width: 0.9; }
+    .rosette-core { fill: currentColor; stroke: none; }
 
     /* --- Секции --- */
-    .section {
-      padding: clamp(2.75rem, 6vw, 4.5rem) 1.25rem;
-    }
-
-    .section-inner {
-      max-width: 1160px;
-      margin: 0 auto;
-    }
-
-    .section-alt {
-      background: var(--bg-mid);
-    }
+    .section { padding: clamp(2.75rem, 6vw, 4.5rem) 1.25rem; }
+    .section-inner { max-width: 1160px; margin: 0 auto; }
+    .section-alt { background: var(--bg-mid); }
 
     /* --- О календаре --- */
     .about-grid {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: clamp(2rem, 5vw, 4rem);
-      align-items: start;
+      display: grid; grid-template-columns: 1.5fr 1fr;
+      gap: clamp(2rem, 5vw, 4rem); align-items: start;
     }
-
-    .about-text p {
-      margin-bottom: 1rem;
-      max-width: 46em;
-    }
-
-    .about-text p:last-child {
-      margin-bottom: 0;
-    }
-
+    .about-text p { margin-bottom: 1rem; max-width: 46em; }
+    .about-text p:last-child { margin-bottom: 0; }
     .about-aside {
-      border-top: 1px solid var(--gold-dim);
-      padding-top: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.1rem;
+      border-top: 1px solid var(--gold-dim); padding-top: 1.25rem;
+      display: flex; flex-direction: column; gap: 1.1rem;
     }
-
-    .aside-row {
-      display: flex;
-      flex-direction: column;
-      gap: 0.15rem;
-    }
-
+    .aside-row { display: flex; flex-direction: column; gap: 0.15rem; }
     .aside-label {
-      font-size: 0.78rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
+      font-size: 0.78rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text-muted);
     }
-
-    .aside-value {
-      font-family: var(--font-display);
-      font-size: 1.2rem;
-      color: var(--gold-light);
-    }
+    .aside-value { font-family: var(--font-display); font-size: 1.2rem; color: var(--gold-light); }
 
     /* --- Дни цикла --- */
-    .cycle-list {
-      list-style: none;
-    }
-
+    .cycle-list { list-style: none; }
     .cycle-item {
-      display: grid;
-      grid-template-columns: 150px 1fr;
-      gap: 2rem;
-      padding: 1.6rem 0;
+      display: grid; grid-template-columns: 150px 1fr;
+      gap: 2rem; padding: 1.6rem 0;
       border-bottom: 1px solid var(--border-subtle);
     }
-
-    .cycle-item:first-child {
-      padding-top: 0;
-    }
-
-    .cycle-item:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-
-    .cycle-date {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      color: var(--gold);
-      letter-spacing: 0.02em;
-    }
-
-    .cycle-content p {
-      color: var(--text-light);
-      font-size: 0.96rem;
-    }
+    .cycle-item:first-child { padding-top: 0; }
+    .cycle-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .cycle-date { font-family: var(--font-display); font-size: 1.15rem; color: var(--gold); }
+    .cycle-content p { color: var(--text-light); font-size: 0.96rem; }
 
     /* --- Цитата --- */
     .quote-banner {
-      position: relative;
-      padding: clamp(3rem, 7vw, 5rem) 1.25rem;
-      text-align: center;
+      position: relative; padding: clamp(3rem, 7vw, 5rem) 1.25rem; text-align: center;
     }
-
     .quote-banner::before {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content: ''; position: absolute; inset: 0;
       background: radial-gradient(ellipse 50% 60% at 50% 50%, rgba(201, 162, 39, 0.06), transparent 70%);
       pointer-events: none;
     }
-
-    .quote-inner {
-      position: relative;
-      max-width: 760px;
-      margin: 0 auto;
-    }
-
+    .quote-inner { position: relative; max-width: 760px; margin: 0 auto; }
     .ornament-divider {
-      width: 120px;
-      height: 1px;
-      background: var(--gold-dim);
-      margin: 0 auto;
-      position: relative;
+      width: 120px; height: 1px; background: var(--gold-dim);
+      margin: 0 auto; position: relative;
     }
-
     .ornament-divider::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 6px;
-      height: 6px;
-      background: var(--gold);
+      content: ''; position: absolute; left: 50%; top: 50%;
+      width: 6px; height: 6px; background: var(--gold);
       transform: translate(-50%, -50%) rotate(45deg);
     }
-
-    blockquote {
-      margin: 2rem 0;
-    }
-
+    blockquote { margin: 2rem 0; }
     blockquote p {
       font-family: var(--font-display);
       font-size: clamp(1.8rem, 4.5vw, 2.9rem);
-      color: var(--gold-light);
-      line-height: 1.25;
-      font-weight: 600;
+      color: var(--gold-light); line-height: 1.25; font-weight: 600;
     }
-
     blockquote cite {
-      display: block;
-      margin-top: 1.2rem;
-      font-style: normal;
-      font-size: 0.85rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--text-muted);
+      display: block; margin-top: 1.2rem; font-style: normal;
+      font-size: 0.85rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--text-muted);
     }
 
     /* --- Разделы (динамические карточки) --- */
     .section-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.75rem;
+      display: flex; align-items: baseline;
+      justify-content: space-between; gap: 1rem;
+      flex-wrap: wrap; margin-bottom: 1.75rem;
     }
-
-    .section-header h2 {
-      margin-bottom: 0;
-    }
+    .section-header h2 { margin-bottom: 0; }
 
     .refresh-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: transparent;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius);
-      color: var(--gold-light);
-      font-family: var(--font-body);
-      font-size: 0.88rem;
-      letter-spacing: 0.04em;
-      padding: 0.5rem 0.95rem;
-      cursor: pointer;
-      transition: border-color 0.2s, color 0.2s, opacity 0.2s;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent; border: 1px solid var(--border-strong);
+      border-radius: var(--radius); color: var(--gold-light);
+      font-family: var(--font-body); font-size: 0.88rem;
+      letter-spacing: 0.04em; padding: 0.5rem 0.95rem;
+      cursor: pointer; transition: border-color 0.2s, color 0.2s, opacity 0.2s;
       flex-shrink: 0;
     }
-
-    .refresh-btn:hover:not(:disabled) {
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-
-    .refresh-btn:focus-visible {
-      outline: 2px solid var(--gold);
-      outline-offset: 3px;
-    }
-
-    .refresh-btn:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
+    .refresh-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+    .refresh-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    .refresh-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
     .refresh-icon {
-      width: 1em;
-      height: 1em;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      width: 1em; height: 1em; stroke: currentColor; fill: none;
+      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
       transition: transform 0.2s;
     }
-
-    .refresh-btn.is-loading .refresh-icon {
-      animation: refresh-spin 0.85s linear infinite;
-    }
-
-    @keyframes refresh-spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
+    .refresh-btn.is-loading .refresh-icon { animation: refresh-spin 0.85s linear infinite; }
+    @keyframes refresh-spin { to { transform: rotate(360deg); } }
 
     .sections-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.25rem;
     }
 
     .section-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius);
-      padding: 1.35rem 1.5rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      transition: border-color 0.25s, background 0.25s, transform 0.15s;
-      position: relative;
-      overflow: hidden;
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius); padding: 1.35rem 1.5rem 1.5rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+      transition: border-color 0.25s, background 0.25s;
+      position: relative; overflow: hidden;
     }
-
-    .section-card:hover {
-      border-color: var(--border-strong);
-      background: #1e3460;
-    }
-
-    .section-card:focus-visible {
-      outline: 2px solid var(--gold);
-      outline-offset: 3px;
-    }
-
-    .section-card[href] {
-      cursor: pointer;
-    }
-
+    .section-card:hover { border-color: var(--border-strong); background: #1e3460; }
+    .section-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    .section-card[href] { cursor: pointer; }
     .section-card .card-order {
-      font-family: var(--font-display);
-      font-size: 0.85rem;
-      color: var(--gold-dim);
-      letter-spacing: 0.1em;
-      margin-bottom: 0.15rem;
+      font-family: var(--font-display); font-size: 0.85rem;
+      color: var(--gold-dim); letter-spacing: 0.1em; margin-bottom: 0.15rem;
     }
-
     .section-card .card-title {
-      font-family: var(--font-display);
-      font-size: 1.35rem;
-      color: var(--gold-light);
-      line-height: 1.2;
+      font-family: var(--font-display); font-size: 1.35rem;
+      color: var(--gold-light); line-height: 1.2;
     }
-
-    .section-card .card-text {
-      font-size: 0.93rem;
-      color: var(--text-light);
-      flex: 1;
-    }
-
+    .section-card .card-text { font-size: 0.93rem; color: var(--text-light); flex: 1; }
     .section-card .card-arrow {
-      align-self: flex-end;
-      font-size: 1.2rem;
-      color: var(--gold-dim);
-      transition: transform 0.2s, color 0.2s;
-      line-height: 1;
+      align-self: flex-end; font-size: 1.2rem; color: var(--gold-dim);
+      transition: transform 0.2s, color 0.2s; line-height: 1;
     }
-
     .section-card[href]:hover .card-arrow,
     .section-card[href]:focus-visible .card-arrow {
-      transform: translateX(4px);
-      color: var(--gold);
+      transform: translateX(4px); color: var(--gold);
     }
 
     .sections-status {
-      grid-column: 1 / -1;
-      padding: 1.5rem 0;
-      color: var(--text-muted);
-      font-style: italic;
-      font-size: 0.95rem;
+      grid-column: 1 / -1; padding: 1.5rem 0;
+      color: var(--text-muted); font-style: italic; font-size: 0.95rem;
     }
-
-    .sections-status.is-error {
-      color: #e0a0a0;
-    }
+    .sections-status.is-error { color: #e0a0a0; }
 
     /* --- Подвал --- */
     .site-footer {
       border-top: 1px solid var(--border-subtle);
-      padding: 1.75rem 1.25rem;
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--text-muted);
+      padding: 1.75rem 1.25rem; text-align: center;
+      font-size: 0.85rem; color: var(--text-muted);
     }
 
     /* --- Адаптив --- */
     @media (max-width: 900px) {
-      .about-grid,
-      .hero-inner {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-art {
-        display: none;
-      }
+      .about-grid, .hero-inner { grid-template-columns: 1fr; }
+      .hero-art { display: none; }
     }
-
     @media (max-width: 760px) {
-      .nav-toggle {
-        display: block;
-      }
-
+      .nav-toggle { display: block; }
       .site-nav {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
+        position: absolute; top: 100%; left: 0; right: 0;
         background: rgba(10, 22, 40, 0.98);
         border-bottom: 1px solid var(--border-subtle);
-        display: none;
-        padding: 0.75rem 1.25rem 1.25rem;
+        display: none; padding: 0.75rem 1.25rem 1.25rem;
       }
-
-      .site-nav.is-open {
-        display: block;
-      }
-
-      .site-nav ul {
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-
-      .site-nav a {
-        display: block;
-        padding: 0.6rem 0;
-        font-size: 1rem;
-        border-bottom: 1px solid var(--border-subtle);
-      }
-
-      .site-nav a:last-child {
-        border-bottom: none;
-      }
+      .site-nav.is-open { display: block; }
+      .site-nav ul { flex-direction: column; gap: 0.5rem; }
+      .site-nav a { display: block; padding: 0.6rem 0; font-size: 1rem; border-bottom: 1px solid var(--border-subtle); }
+      .site-nav a:last-child { border-bottom: none; }
     }
-
     @media (max-width: 620px) {
-      .cycle-item {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-      }
-
-      .sections-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .section-header {
-        align-items: center;
-      }
-
-      .refresh-btn {
-        font-size: 0.82rem;
-        padding: 0.45rem 0.8rem;
-      }
+      .cycle-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .sections-grid { grid-template-columns: 1fr; }
+      .section-header { align-items: center; }
+      .refresh-btn { font-size: 0.82rem; padding: 0.45rem 0.8rem; }
     }
-
     @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
-      * {
-        transition-duration: 0.01ms !important;
-        animation-duration: 0.01ms !important;
-      }
-      .refresh-btn.is-loading .refresh-icon {
-        animation: none;
-      }
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+      .refresh-btn.is-loading .refresh-icon { animation: none; }
     }
   </style>
 </head>
@@ -863,8 +493,16 @@
         });
       });
 
+      // ⚠️ ВАЖНО: замените этот URL на ваш собственный из «Файл → Поделиться → Опубликовать в интернете → CSV»
       const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTZ8ScGrpg72Ujy286RowU9xbEi8kE-BJ7jKaGAbpRBQ1JDWGzDSoOY2oC717pRF-a6vlivxqdvTvmk/pub?gid=0&single=true&output=csv';
-      const PROXY_URL = 'https://api.allorigins.win/raw?url=';
+
+      // Список прокси: пробуем по очереди, пока один не ответит
+      const PROXIES = [
+        'https://corsproxy.io/?',
+        'https://api.allorigins.win/raw?url=',
+        'https://api.codetabs.com/v1/proxy?quest='
+      ];
+
       const REFRESH_COOLDOWN_MS = 4000;
       const DONE_TEXT_MS = 1500;
 
@@ -900,31 +538,20 @@
       }
 
       function clearTimers() {
-        if (cooldownTimer) {
-          clearTimeout(cooldownTimer);
-          cooldownTimer = null;
-        }
-        if (doneTextTimer) {
-          clearTimeout(doneTextTimer);
-          doneTextTimer = null;
-        }
+        if (cooldownTimer) { clearTimeout(cooldownTimer); cooldownTimer = null; }
+        if (doneTextTimer) { clearTimeout(doneTextTimer); doneTextTimer = null; }
       }
 
       function startCooldown(succeeded) {
         clearTimers();
         setButtonState(succeeded ? 'done' : 'error');
-
         if (succeeded) {
-          doneTextTimer = setTimeout(function () {
-            refreshLabel.textContent = 'Обновить';
-          }, DONE_TEXT_MS);
+          doneTextTimer = setTimeout(function () { refreshLabel.textContent = 'Обновить'; }, DONE_TEXT_MS);
         }
-
-        cooldownTimer = setTimeout(function () {
-          setButtonState('idle');
-        }, REFRESH_COOLDOWN_MS);
+        cooldownTimer = setTimeout(function () { setButtonState('idle'); }, REFRESH_COOLDOWN_MS);
       }
 
+      // Упрощённый парсер CSV (достаточно для таблиц без вложенных кавычек с запятыми внутри)
       function parseCSV(text) {
         const rows = [];
         let row = [];
@@ -936,41 +563,24 @@
           const next = text[i + 1];
 
           if (inQuotes) {
-            if (char === '"' && next === '"') {
-              field += '"';
-              i++;
-            } else if (char === '"') {
-              inQuotes = false;
-            } else {
-              field += char;
-            }
+            if (char === '"' && next === '"') { field += '"'; i++; }
+            else if (char === '"') { inQuotes = false; }
+            else { field += char; }
           } else {
-            if (char === '"') {
-              inQuotes = true;
-            } else if (char === ',') {
-              row.push(field);
-              field = '';
-            } else if (char === '\n' || char === '\r') {
+            if (char === '"') { inQuotes = true; }
+            else if (char === ',') { row.push(field); field = ''; }
+            else if (char === '\n' || char === '\r') {
               if (char === '\r' && next === '\n') i++;
               row.push(field);
-              if (row.some(function (cell) { return cell.trim() !== ''; })) {
-                rows.push(row);
-              }
-              row = [];
-              field = '';
-            } else {
-              field += char;
-            }
+              if (row.some(cell => cell.trim() !== '')) rows.push(row);
+              row = []; field = '';
+            } else { field += char; }
           }
         }
-
         if (field !== '' || row.length > 0) {
           row.push(field);
-          if (row.some(function (cell) { return cell.trim() !== ''; })) {
-            rows.push(row);
-          }
+          if (row.some(cell => cell.trim() !== '')) rows.push(row);
         }
-
         return rows;
       }
 
@@ -981,24 +591,15 @@
 
       function renderSections(items) {
         grid.innerHTML = '';
-
         if (!items.length) {
-          const empty = document.createElement('p');
-          empty.className = 'sections-status';
-          empty.textContent = 'Разделы пока не добавлены.';
-          grid.appendChild(empty);
+          grid.innerHTML = '<p class="sections-status">Разделы пока не добавлены.</p>';
           return;
         }
-
         const fragment = document.createDocumentFragment();
-
         items.forEach(function (item) {
           const card = document.createElement(item.link ? 'a' : 'div');
           card.className = 'section-card';
-
-          if (item.link) {
-            card.href = item.link;
-          }
+          if (item.link) card.href = item.link;
 
           const orderEl = document.createElement('span');
           orderEl.className = 'card-order';
@@ -1026,11 +627,28 @@
             arrowEl.style.display = 'none';
             card.style.cursor = 'default';
           }
-
           fragment.appendChild(card);
         });
-
         grid.appendChild(fragment);
+      }
+
+      // Загрузка с перебором прокси
+      async function fetchWithProxy(url) {
+        let lastError = null;
+        for (let i = 0; i < PROXIES.length; i++) {
+          const proxy = PROXIES[i];
+          const proxiedUrl = proxy + encodeURIComponent(url);
+          try {
+            const response = await fetch(proxiedUrl, { cache: 'no-store' });
+            if (response.ok) {
+              return await response.text();
+            }
+            lastError = new Error(`Прокси ${proxy} вернул HTTP ${response.status}`);
+          } catch (e) {
+            lastError = e;
+          }
+        }
+        throw lastError || new Error('Все прокси недоступны');
       }
 
       async function loadSections(userInitiated) {
@@ -1041,23 +659,14 @@
 
         try {
           const cacheBuster = (SHEET_CSV_URL.indexOf('?') !== -1 ? '&' : '?') + '_=' + Date.now();
-          const response = await fetch(PROXY_URL + encodeURIComponent(SHEET_CSV_URL + cacheBuster));
-
-          if (!response.ok) {
-            throw new Error('HTTP ' + response.status);
-          }
-
-          const csvText = await response.text();
+          const csvText = await fetchWithProxy(SHEET_CSV_URL + cacheBuster);
           const rows = parseCSV(csvText);
 
           if (rows.length < 2) {
-            throw new Error('В таблице нет данных');
+            throw new Error('В таблице нет данных (менее двух строк).');
           }
 
-          const header = rows[0].map(function (cell) {
-            return cell.trim().toLowerCase();
-          });
-
+          const header = rows[0].map(cell => cell.trim().toLowerCase());
           const orderIdx = header.indexOf('порядок');
           const titleIdx = header.indexOf('заголовок');
           const textIdx = header.indexOf('текст');
@@ -1065,7 +674,7 @@
           const activeIdx = header.indexOf('активность');
 
           if (orderIdx === -1 || titleIdx === -1 || textIdx === -1 || activeIdx === -1) {
-            throw new Error('Не найдены нужные столбцы');
+            throw new Error('Не найдены нужные столбцы. Проверьте заголовки: «Порядок», «Заголовок», «Текст», «Активность».');
           }
 
           const items = rows.slice(1)
@@ -1078,18 +687,14 @@
                 active: isActive(row[activeIdx])
               };
             })
-            .filter(function (item) {
-              return item.active && item.title && !isNaN(item.order);
-            })
-            .sort(function (a, b) {
-              return a.order - b.order;
-            });
+            .filter(item => item.active && item.title && !isNaN(item.order))
+            .sort((a, b) => a.order - b.order);
 
           renderSections(items);
           succeeded = true;
         } catch (error) {
           console.error('Не удалось загрузить разделы:', error);
-          grid.innerHTML = '<p class="sections-status is-error">Не удалось загрузить разделы. Проверьте подключение к интернету или нажмите «Обновить» позже.</p>';
+          grid.innerHTML = `<p class="sections-status is-error">Не удалось загрузить разделы. ${error.message}. Проверьте, что таблица опубликована как CSV, и нажмите «Обновить».</p>`;
         }
 
         if (userInitiated) {
