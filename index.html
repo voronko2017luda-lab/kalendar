@@ -201,7 +201,7 @@
       text-transform: uppercase; color: var(--text-muted);
     }
 
-    /* Разделы */
+    /* Заголовок секции с кнопкой */
     .section-header {
       display: flex; align-items: baseline;
       justify-content: space-between; gap: 1rem;
@@ -230,6 +230,7 @@
     .refresh-btn.is-loading .refresh-icon { animation: refresh-spin 0.85s linear infinite; }
     @keyframes refresh-spin { to { transform: rotate(360deg); } }
 
+    /* Карточки разделов */
     .sections-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.25rem;
@@ -246,12 +247,12 @@
     .section-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
     .section-card[href] { cursor: pointer; }
     
-    /* Обновленный блок даты */
+    /* Дата */
     .section-card .card-date {
       font-family: var(--font-display);
-      font-size: 2rem; /* Увеличенный шрифт */
+      font-size: 2rem;
       font-weight: 700;
-      color: var(--gold); /* Более контрастный цвет */
+      color: var(--gold);
       letter-spacing: 0.03em;
       margin-bottom: 0.25rem;
       line-height: 1.1;
@@ -276,6 +277,64 @@
       color: var(--text-muted); font-style: italic; font-size: 0.95rem;
     }
     .sections-status.is-error { color: #e0a0a0; }
+
+    /* Галерея */
+    .gallery-grid {
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .gallery-card {
+      background: var(--bg-card); 
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius); 
+      overflow: hidden;
+      display: flex; 
+      flex-direction: column;
+      transition: border-color 0.25s;
+    }
+    .gallery-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .gallery-img-wrapper {
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+      background-color: #0d1c33;
+    }
+
+    .gallery-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .gallery-card:hover .gallery-img {
+      transform: scale(1.05);
+    }
+
+    .gallery-content {
+      padding: 1rem 1.25rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .gallery-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: var(--gold-light);
+      margin-bottom: 0.25rem;
+    }
+
+    .gallery-text {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      flex: 1;
+    }
 
     /* Подвал */
     .site-footer {
@@ -304,7 +363,7 @@
     }
     @media (max-width: 620px) {
       .cycle-item { grid-template-columns: 1fr; gap: 0.5rem; }
-      .sections-grid { grid-template-columns: 1fr; }
+      .sections-grid, .gallery-grid { grid-template-columns: 1fr; }
       .section-header { align-items: center; }
       .refresh-btn { font-size: 0.82rem; padding: 0.45rem 0.8rem; }
     }
@@ -327,6 +386,8 @@
           <li><a href="tradition.html">О традиции</a></li>
           <li><a href="tasks.html">Задания</a></li>
           <li><a href="recipes.html">Рецепты</a></li>
+          <li><a href="#sections">Разделы</a></li>
+          <li><a href="#gallery">Галерея</a></li>
           <li><a href="contacts.html">Контакты</a></li>
         </ul>
       </nav>
@@ -363,6 +424,7 @@
       </div>
     </section>
 
+    <!-- Существующие секции оставлены без изменений (для краткости) -->
     <section class="section">
       <div class="section-inner about-grid">
         <div class="about-text">
@@ -460,11 +522,12 @@
       </div>
     </section>
 
+    <!-- Секция Разделы -->
     <section class="section section-alt" id="sections">
       <div class="section-inner">
         <div class="section-header">
           <h2>Разделы</h2>
-          <button class="refresh-btn" id="refresh-btn" type="button" aria-busy="false" aria-label="Обновить разделы">
+          <button class="refresh-btn" id="refresh-sections-btn" type="button" aria-busy="false" aria-label="Обновить разделы">
             <svg class="refresh-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <polyline points="23 4 23 10 17 10"></polyline>
               <polyline points="1 20 1 14 7 14"></polyline>
@@ -475,6 +538,26 @@
         </div>
         <div class="sections-grid" id="sections-grid">
           <p class="sections-status">Загрузка разделов…</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Новая Секция Галерея -->
+    <section class="section" id="gallery">
+      <div class="section-inner">
+        <div class="section-header">
+          <h2>Галерея</h2>
+          <button class="refresh-btn" id="refresh-gallery-btn" type="button" aria-busy="false" aria-label="Обновить галерею">
+            <svg class="refresh-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <polyline points="1 20 1 14 7 14"></polyline>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+            <span class="refresh-label" aria-live="polite">Обновить</span>
+          </button>
+        </div>
+        <div class="gallery-grid" id="gallery-grid">
+          <p class="sections-status">Загрузка галереи…</p>
         </div>
       </div>
     </section>
@@ -502,61 +585,13 @@
         });
       });
 
-      /* Загрузка карточек */
-      const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTZ8ScGrpg72Ujy286RowU9xbEi8kE-BJ7jKaGAbpRBQ1JDWGzDSoOY2oC717pRF-a6vlivxqdvTvmk/pub?gid=0&single=true&output=csv';
-
+      /* ================= ОБЩИЕ УТИЛИТЫ ================= */
       const PROXIES = [
         'https://api.allorigins.win/raw?url=',
         'https://api.codetabs.com/v1/proxy?quest='
       ];
-
       const REFRESH_COOLDOWN_MS = 4000;
       const DONE_TEXT_MS = 1500;
-
-      const grid = document.getElementById('sections-grid');
-      const refreshBtn = document.getElementById('refresh-btn');
-      const refreshLabel = refreshBtn.querySelector('.refresh-label');
-
-      let cooldownTimer = null;
-      let doneTextTimer = null;
-
-      function setButtonState(state) {
-        if (state === 'loading') {
-          refreshBtn.classList.add('is-loading');
-          refreshBtn.disabled = true;
-          refreshBtn.setAttribute('aria-busy', 'true');
-          refreshLabel.textContent = 'Загрузка…';
-        } else if (state === 'done') {
-          refreshBtn.classList.remove('is-loading');
-          refreshBtn.disabled = true;
-          refreshBtn.setAttribute('aria-busy', 'false');
-          refreshLabel.textContent = 'Обновлено';
-        } else if (state === 'error') {
-          refreshBtn.classList.remove('is-loading');
-          refreshBtn.disabled = true;
-          refreshBtn.setAttribute('aria-busy', 'false');
-          refreshLabel.textContent = 'Ошибка';
-        } else {
-          refreshBtn.classList.remove('is-loading');
-          refreshBtn.disabled = false;
-          refreshBtn.setAttribute('aria-busy', 'false');
-          refreshLabel.textContent = 'Обновить';
-        }
-      }
-
-      function clearTimers() {
-        if (cooldownTimer) { clearTimeout(cooldownTimer); cooldownTimer = null; }
-        if (doneTextTimer) { clearTimeout(doneTextTimer); doneTextTimer = null; }
-      }
-
-      function startCooldown(succeeded) {
-        clearTimers();
-        setButtonState(succeeded ? 'done' : 'error');
-        if (succeeded) {
-          doneTextTimer = setTimeout(function () { refreshLabel.textContent = 'Обновить'; }, DONE_TEXT_MS);
-        }
-        cooldownTimer = setTimeout(function () { setButtonState('idle'); }, REFRESH_COOLDOWN_MS);
-      }
 
       function parseCSV(text) {
         const rows = [];
@@ -593,14 +628,95 @@
         return normalized === 'true' || normalized === '1' || normalized === 'да' || normalized === 'on';
       }
 
+      async function fetchWithProxy(url) {
+        try {
+          const directRes = await fetch(url, { cache: 'no-store' });
+          if (directRes.ok) return await directRes.text();
+        } catch (e) { /* Игнорируем CORS */ }
+
+        let lastError = null;
+        for (const proxy of PROXIES) {
+          try {
+            const response = await fetch(proxy + encodeURIComponent(url), { cache: 'no-store' });
+            if (response.ok) {
+              const text = await response.text();
+              if (text.trim().toLowerCase().startsWith('<!doctype html') || text.trim().toLowerCase().startsWith('<html')) {
+                throw new Error('Прокси вернул HTML вместо CSV');
+              }
+              return text;
+            }
+            lastError = new Error(`HTTP ${response.status}`);
+          } catch (e) {
+            lastError = e;
+          }
+        }
+        throw lastError || new Error('Все способы загрузки недоступны');
+      }
+
+      /* ================= ЛОГИКА КНОПКИ ================= */
+      function setupButton(btn, labelEl) {
+        let cooldownTimer = null;
+        let doneTextTimer = null;
+
+        function clearTimers() {
+          if (cooldownTimer) { clearTimeout(cooldownTimer); cooldownTimer = null; }
+          if (doneTextTimer) { clearTimeout(doneTextTimer); doneTextTimer = null; }
+        }
+
+        function setState(state) {
+          if (state === 'loading') {
+            btn.classList.add('is-loading');
+            btn.disabled = true;
+            btn.setAttribute('aria-busy', 'true');
+            labelEl.textContent = 'Загрузка…';
+          } else if (state === 'done') {
+            btn.classList.remove('is-loading');
+            btn.disabled = true;
+            btn.setAttribute('aria-busy', 'false');
+            labelEl.textContent = 'Обновлено';
+          } else if (state === 'error') {
+            btn.classList.remove('is-loading');
+            btn.disabled = true;
+            btn.setAttribute('aria-busy', 'false');
+            labelEl.textContent = 'Ошибка';
+          } else {
+            btn.classList.remove('is-loading');
+            btn.disabled = false;
+            btn.setAttribute('aria-busy', 'false');
+            labelEl.textContent = 'Обновить';
+          }
+        }
+
+        return {
+          setLoading: () => setState('loading'),
+          finish(succeeded) {
+            clearTimers();
+            setState(succeeded ? 'done' : 'error');
+            if (succeeded) {
+              doneTextTimer = setTimeout(() => { labelEl.textContent = 'Обновить'; }, DONE_TEXT_MS);
+            }
+            cooldownTimer = setTimeout(() => { setState('idle'); }, REFRESH_COOLDOWN_MS);
+          },
+          reset: () => setState('idle')
+        };
+      }
+
+      /* ================= 1. СЕКЦИЯ "РАЗДЕЛЫ" ================= */
+      const SECTIONS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTZ8ScGrpg72Ujy286RowU9xbEi8kE-BJ7jKaGAbpRBQ1JDWGzDSoOY2oC717pRF-a6vlivxqdvTvmk/pub?gid=0&single=true&output=csv';
+      
+      const sectionsGrid = document.getElementById('sections-grid');
+      const sectionsBtn = document.getElementById('refresh-sections-btn');
+      const sectionsLabel = sectionsBtn.querySelector('.refresh-label');
+      const sectionsControl = setupButton(sectionsBtn, sectionsLabel);
+
       function renderSections(items) {
-        grid.innerHTML = '';
+        sectionsGrid.innerHTML = '';
         if (!items.length) {
-          grid.innerHTML = '<p class="sections-status">Разделы пока не добавлены.</p>';
+          sectionsGrid.innerHTML = '<p class="sections-status">Разделы пока не добавлены.</p>';
           return;
         }
         const fragment = document.createDocumentFragment();
-        items.forEach(function (item) {
+        items.forEach(item => {
           const card = document.createElement(item.link ? 'a' : 'div');
           card.className = 'section-card';
           if (item.link) card.href = item.link;
@@ -633,48 +749,21 @@
           }
           fragment.appendChild(card);
         });
-        grid.appendChild(fragment);
-      }
-
-      async function fetchWithProxy(url) {
-        try {
-          const directRes = await fetch(url, { cache: 'no-store' });
-          if (directRes.ok) return await directRes.text();
-        } catch (e) { /* Игнорируем CORS */ }
-
-        let lastError = null;
-        for (const proxy of PROXIES) {
-          try {
-            const response = await fetch(proxy + encodeURIComponent(url), { cache: 'no-store' });
-            if (response.ok) {
-              const text = await response.text();
-              if (text.trim().toLowerCase().startsWith('<!doctype html') || text.trim().toLowerCase().startsWith('<html')) {
-                throw new Error('Прокси вернул HTML вместо CSV');
-              }
-              return text;
-            }
-            lastError = new Error(`HTTP ${response.status}`);
-          } catch (e) {
-            lastError = e;
-          }
-        }
-        throw lastError || new Error('Все способы загрузки недоступны');
+        sectionsGrid.appendChild(fragment);
       }
 
       async function loadSections(userInitiated) {
-        setButtonState('loading');
-        grid.innerHTML = '<p class="sections-status">Загрузка разделов…</p>';
+        if (userInitiated) sectionsControl.setLoading();
+        else sectionsGrid.innerHTML = '<p class="sections-status">Загрузка разделов…</p>';
+        
         let succeeded = false;
-
         try {
-          const cacheBuster = (SHEET_CSV_URL.includes('?') ? '&' : '?') + '_=' + Date.now();
-          const csvText = await fetchWithProxy(SHEET_CSV_URL + cacheBuster);
+          const cacheBuster = (SECTIONS_URL.includes('?') ? '&' : '?') + '_=' + Date.now();
+          const csvText = await fetchWithProxy(SECTIONS_URL + cacheBuster);
           const rows = parseCSV(csvText);
+          if (rows.length < 2) throw new Error('В таблице нет данных.');
 
-          if (rows.length < 2) throw new Error('В таблице нет данных (менее двух строк).');
-
-          const header = rows[0].map(cell => cell.trim().toLowerCase());
-          
+          const header = rows[0].map(c => c.trim().toLowerCase());
           const orderIdx = header.indexOf('порядок');
           const dateIdx = header.indexOf('дата');
           const titleIdx = header.indexOf('заголовок');
@@ -683,42 +772,136 @@
           const activeIdx = header.indexOf('активность');
 
           if (orderIdx === -1 || dateIdx === -1 || titleIdx === -1 || textIdx === -1 || activeIdx === -1) {
-            throw new Error('Не найдены нужные столбцы. Проверьте заголовки в таблице.');
+            throw new Error('Не найдены нужные столбцы в таблице разделов.');
           }
 
           const items = rows.slice(1)
-            .map(function (row) {
-              return {
-                order: parseInt(row[orderIdx], 10),
-                date: row[dateIdx] ? row[dateIdx].trim() : '',
-                title: row[titleIdx] ? row[titleIdx].trim() : '',
-                text: row[textIdx] ? row[textIdx].trim() : '',
-                link: linkIdx !== -1 && row[linkIdx] ? row[linkIdx].trim() : '',
-                active: isActive(row[activeIdx])
-              };
-            })
+            .map(row => ({
+              order: parseInt(row[orderIdx], 10),
+              date: row[dateIdx] ? row[dateIdx].trim() : '',
+              title: row[titleIdx] ? row[titleIdx].trim() : '',
+              text: row[textIdx] ? row[textIdx].trim() : '',
+              link: linkIdx !== -1 && row[linkIdx] ? row[linkIdx].trim() : '',
+              active: isActive(row[activeIdx])
+            }))
             .filter(item => item.active && item.title && !isNaN(item.order))
             .sort((a, b) => a.order - b.order);
 
           renderSections(items);
           succeeded = true;
         } catch (error) {
-          console.error('Не удалось загрузить разделы:', error);
-          grid.innerHTML = `<p class="sections-status is-error">Не удалось загрузить разделы. ${error.message}. Проверьте подключение и нажмите «Обновить».</p>`;
+          console.error('Ошибка разделов:', error);
+          sectionsGrid.innerHTML = `<p class="sections-status is-error">Не удалось загрузить разделы. ${error.message}</p>`;
         }
 
-        if (userInitiated) {
-          startCooldown(succeeded);
-        } else {
-          setButtonState('idle');
-        }
+        if (userInitiated) sectionsControl.finish(succeeded);
+        else sectionsControl.reset();
       }
 
-      refreshBtn.addEventListener('click', function () {
-        loadSections(true);
-      });
-
+      sectionsBtn.addEventListener('click', () => loadSections(true));
       loadSections(false);
+
+      /* ================= 2. СЕКЦИЯ "ГАЛЕРЕЯ" ================= */
+      const GALLERY_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRmxQh-ENRcryK8b-QygpiSDkqGxWZizs5GVB6J2wmB15Q5fBNZfUm1BU1fnPcKemugZ2arT3hx9Dqn/pub?gid=0&single=true&output=csv';
+      
+      const galleryGrid = document.getElementById('gallery-grid');
+      const galleryBtn = document.getElementById('refresh-gallery-btn');
+      const galleryLabel = galleryBtn.querySelector('.refresh-label');
+      const galleryControl = setupButton(galleryBtn, galleryLabel);
+
+      function renderGallery(items) {
+        galleryGrid.innerHTML = '';
+        if (!items.length) {
+          galleryGrid.innerHTML = '<p class="sections-status">В галерее пока нет картинок.</p>';
+          return;
+        }
+        const fragment = document.createDocumentFragment();
+        items.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'gallery-card';
+
+          const imgWrapper = document.createElement('div');
+          imgWrapper.className = 'gallery-img-wrapper';
+          
+          const img = document.createElement('img');
+          img.className = 'gallery-img';
+          img.src = item.link; 
+          img.alt = item.title || 'Изображение галереи';
+          img.loading = 'lazy'; // Ленивая загрузка для оптимизации
+          
+          imgWrapper.appendChild(img);
+          card.appendChild(imgWrapper);
+
+          const content = document.createElement('div');
+          content.className = 'gallery-content';
+
+          if (item.title) {
+            const title = document.createElement('h3');
+            title.className = 'gallery-title';
+            title.textContent = item.title;
+            content.appendChild(title);
+          }
+
+          if (item.text) {
+            const text = document.createElement('p');
+            text.className = 'gallery-text';
+            text.textContent = item.text;
+            content.appendChild(text);
+          }
+
+          card.appendChild(content);
+          fragment.appendChild(card);
+        });
+        galleryGrid.appendChild(fragment);
+      }
+
+      async function loadGallery(userInitiated) {
+        if (userInitiated) galleryControl.setLoading();
+        else galleryGrid.innerHTML = '<p class="sections-status">Загрузка галереи…</p>';
+        
+        let succeeded = false;
+        try {
+          const cacheBuster = (GALLERY_URL.includes('?') ? '&' : '?') + '_=' + Date.now();
+          const csvText = await fetchWithProxy(GALLERY_URL + cacheBuster);
+          const rows = parseCSV(csvText);
+          if (rows.length < 2) throw new Error('В таблице нет данных.');
+
+          const header = rows[0].map(c => c.trim().toLowerCase());
+          const orderIdx = header.indexOf('порядок');
+          const titleIdx = header.indexOf('заголовок');
+          const textIdx = header.indexOf('текст');
+          const linkIdx = header.indexOf('ссылка');
+          const activeIdx = header.indexOf('активность');
+
+          if (orderIdx === -1 || titleIdx === -1 || textIdx === -1 || linkIdx === -1 || activeIdx === -1) {
+            throw new Error('Не найдены нужные столбцы в таблице галереи.');
+          }
+
+          const items = rows.slice(1)
+            .map(row => ({
+              order: parseInt(row[orderIdx], 10),
+              title: row[titleIdx] ? row[titleIdx].trim() : '',
+              text: row[textIdx] ? row[textIdx].trim() : '',
+              link: row[linkIdx] ? row[linkIdx].trim() : '',
+              active: isActive(row[activeIdx])
+            }))
+            .filter(item => item.active && item.link && !isNaN(item.order))
+            .sort((a, b) => a.order - b.order);
+
+          renderGallery(items);
+          succeeded = true;
+        } catch (error) {
+          console.error('Ошибка галереи:', error);
+          galleryGrid.innerHTML = `<p class="sections-status is-error">Не удалось загрузить галерею. ${error.message}</p>`;
+        }
+
+        if (userInitiated) galleryControl.finish(succeeded);
+        else galleryControl.reset();
+      }
+
+      galleryBtn.addEventListener('click', () => loadGallery(true));
+      loadGallery(false);
+
     })();
   </script>
 
