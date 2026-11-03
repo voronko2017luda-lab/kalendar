@@ -292,10 +292,19 @@
       overflow: hidden;
       display: flex; 
       flex-direction: column;
-      transition: border-color 0.25s;
+      transition: border-color 0.25s, transform 0.2s;
+      text-decoration: none;
+      color: inherit;
     }
-    .gallery-card:hover {
+    
+    /* Эффекты при наведении, если карточка является ссылкой */
+    a.gallery-card:hover {
       border-color: var(--border-strong);
+      transform: translateY(-2px);
+    }
+    a.gallery-card:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
     }
 
     .gallery-img-wrapper {
@@ -312,7 +321,7 @@
       transition: transform 0.3s;
     }
 
-    .gallery-card:hover .gallery-img {
+    a.gallery-card:hover .gallery-img {
       transform: scale(1.05);
     }
 
@@ -328,6 +337,11 @@
       font-size: 1.25rem;
       color: var(--gold-light);
       margin-bottom: 0.25rem;
+      transition: color 0.2s;
+    }
+
+    a.gallery-card:hover .gallery-title {
+      color: var(--gold-bright);
     }
 
     .gallery-text {
@@ -424,7 +438,6 @@
       </div>
     </section>
 
-    <!-- Существующие секции оставлены без изменений (для краткости) -->
     <section class="section">
       <div class="section-inner about-grid">
         <div class="about-text">
@@ -542,7 +555,7 @@
       </div>
     </section>
 
-    <!-- Новая Секция Галерея -->
+    <!-- Секция Галерея -->
     <section class="section" id="gallery">
       <div class="section-inner">
         <div class="section-header">
@@ -719,7 +732,11 @@
         items.forEach(item => {
           const card = document.createElement(item.link ? 'a' : 'div');
           card.className = 'section-card';
-          if (item.link) card.href = item.link;
+          if (item.link) {
+            card.href = item.link;
+            card.target = '_blank';
+            card.rel = 'noopener noreferrer';
+          }
 
           const dateEl = document.createElement('span');
           dateEl.className = 'card-date';
@@ -763,7 +780,9 @@
           const rows = parseCSV(csvText);
           if (rows.length < 2) throw new Error('В таблице нет данных.');
 
-          const header = rows[0].map(c => c.trim().toLowerCase());
+          // Убираем все пробелы из заголовков для надежности
+          const header = rows[0].map(c => c.trim().toLowerCase().replace(/\s+/g, ''));
+          
           const orderIdx = header.indexOf('порядок');
           const dateIdx = header.indexOf('дата');
           const titleIdx = header.indexOf('заголовок');
@@ -817,17 +836,24 @@
         }
         const fragment = document.createDocumentFragment();
         items.forEach(item => {
-          const card = document.createElement('div');
+          // Если есть ссылка, делаем карточку кликабельной (<a>), иначе обычный <div>
+          const card = document.createElement(item.link ? 'a' : 'div');
           card.className = 'gallery-card';
+          
+          if (item.link) {
+            card.href = item.link;
+            card.target = '_blank';
+            card.rel = 'noopener noreferrer';
+          }
 
           const imgWrapper = document.createElement('div');
           imgWrapper.className = 'gallery-img-wrapper';
           
           const img = document.createElement('img');
           img.className = 'gallery-img';
-          img.src = item.link; 
+          img.src = item.imageLink; // Ссылка на картинку из столбца "СсылкаКартинка"
           img.alt = item.title || 'Изображение галереи';
-          img.loading = 'lazy'; // Ленивая загрузка для оптимизации
+          img.loading = 'lazy'; 
           
           imgWrapper.appendChild(img);
           card.appendChild(imgWrapper);
@@ -866,14 +892,17 @@
           const rows = parseCSV(csvText);
           if (rows.length < 2) throw new Error('В таблице нет данных.');
 
-          const header = rows[0].map(c => c.trim().toLowerCase());
+          // Убираем все пробелы из заголовков
+          const header = rows[0].map(c => c.trim().toLowerCase().replace(/\s+/g, ''));
+          
           const orderIdx = header.indexOf('порядок');
           const titleIdx = header.indexOf('заголовок');
           const textIdx = header.indexOf('текст');
-          const linkIdx = header.indexOf('ссылка');
+          const imageLinkIdx = header.indexOf('ссылкакартинка'); // Столбец с URL картинки
+          const linkIdx = header.indexOf('ссылка'); // Столбец с URL для клика
           const activeIdx = header.indexOf('активность');
 
-          if (orderIdx === -1 || titleIdx === -1 || textIdx === -1 || linkIdx === -1 || activeIdx === -1) {
+          if (orderIdx === -1 || titleIdx === -1 || textIdx === -1 || imageLinkIdx === -1 || activeIdx === -1) {
             throw new Error('Не найдены нужные столбцы в таблице галереи.');
           }
 
@@ -882,10 +911,12 @@
               order: parseInt(row[orderIdx], 10),
               title: row[titleIdx] ? row[titleIdx].trim() : '',
               text: row[textIdx] ? row[textIdx].trim() : '',
-              link: row[linkIdx] ? row[linkIdx].trim() : '',
+              imageLink: row[imageLinkIdx] ? row[imageLinkIdx].trim() : '',
+              link: linkIdx !== -1 && row[linkIdx] ? row[linkIdx].trim() : '',
               active: isActive(row[activeIdx])
             }))
-            .filter(item => item.active && item.link && !isNaN(item.order))
+            // Фильтруем: активные, с картинкой и валидным порядком
+            .filter(item => item.active && item.imageLink && !isNaN(item.order))
             .sort((a, b) => a.order - b.order);
 
           renderGallery(items);
