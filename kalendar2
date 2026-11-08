@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Интерактивный православный рождественский календарь на 24 дня.">
+  <title>Календарь ожидания — Дорога к Рождеству Христову</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-light: #F8F6F0;
+      --bg-blue: #0B306B;
+      --bg-blue-dark: #072254;
+      --bg-red: #8E2227;
+      
+      --text-dark: #1F2229;
+      --text-light: #FFFFFF;
+      --text-muted: #6B6E76;
+      
+      --card-bg: #FFFFFF;
+      --card-hover: #F2EFE6;
+      
+      --font-display: 'Cormorant Garamond', serif;
+      --font-sans: 'Montserrat', sans-serif;
+      
+      --ease-out: cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    html { scroll-behavior: smooth; background-color: var(--bg-light); }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--text-dark);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* --- Шапка --- */
+    .header {
+      position: absolute; top: 0; left: 0; width: 100%;
+      padding: 1.5rem 4vw;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 100;
+      color: var(--text-light);
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.4rem; font-weight: 500; letter-spacing: 0.02em;
+    }
+    .nav { display: flex; gap: 2rem; }
+    .nav a {
+      font-size: 0.8rem; font-weight: 400; letter-spacing: 0.05em;
+      position: relative; padding-bottom: 2px;
+      opacity: 0.8; transition: opacity 0.3s;
+    }
+    .nav a:hover { opacity: 1; }
+    .nav a::after {
+      content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px;
+      background: white; transition: width 0.3s var(--ease-out);
+    }
+    .nav a:hover::after { width: 100%; }
+
+    /* --- Hero Section --- */
+    .hero {
+      position: relative;
+      background: linear-gradient(135deg, #061533 0%, #164181 50%, #285A9C 100%);
+      padding: 120px 4vw 80px;
+      text-align: center;
+      color: var(--text-light);
+      overflow: hidden;
+    }
+    
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -1px; left: 0; width: 100%; height: 100px;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 100' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,50 C400,120 1040,-20 1440,50 L1440,100 L0,100 Z' fill='%23F8F6F0'/%3E%3C/svg%3E");
+      background-size: 100% 100%;
+      z-index: 10;
+    }
+
+    .hero-glow {
+      position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
+      width: 80vw; height: 80vw; max-width: 800px; max-height: 800px;
+      background: radial-gradient(circle, rgba(255, 235, 180, 0.15) 0%, transparent 60%);
+      border-radius: 50%; z-index: 0; pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 2; }
+    
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1.1; font-weight: 500;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .hero-subtitle {
+      font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.3em;
+      color: #E5C886; margin-bottom: 1.5rem;
+    }
+    .hero-desc {
+      font-family: var(--font-display);
+      font-size: 1.2rem; line-height: 1.4;
+      max-width: 600px; margin: 0 auto;
+      color: rgba(255,255,255,0.9);
+    }
+
+    /* --- Секция Календаря --- */
+    .calendar-section {
+      padding: 2rem 4vw 6rem;
+      position: relative;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    /* Карточка дня */
+    .day-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(11, 48, 107, 0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+      cursor: pointer;
+      transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s;
+      overflow: hidden;
+      outline: none;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .day-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 25px rgba(11, 48, 107, 0.08);
+      border-color: var(--bg-blue);
+    }
+
+    .day-card:focus-visible {
+      box-shadow: 0 0 0 3px rgba(11, 48, 107, 0.3);
+    }
+
+    .day-card.is-open {
+      border-color: var(--bg-blue);
+      background: #FCFBF7;
+      transform: translateY(0);
+      box-shadow: inset 0 0 0 1px var(--bg-blue), 0 10px 30px rgba(11, 48, 107, 0.1);
+    }
+
+    .day-summary {
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: background 0.3s;
+    }
+
+    .day-number {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--bg-blue);
+      line-height: 1;
+    }
+
+    .day-weekday {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .day-toggle-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(11, 48, 107, 0.05);
+      color: var(--bg-blue);
+      transition: transform 0.4s var(--ease-out), background 0.3s;
+    }
+
+    .day-card:hover .day-toggle-icon {
+      background: var(--bg-blue);
+      color: white;
+    }
+
+    .day-card.is-open .day-toggle-icon {
+      transform: rotate(180deg);
+      background: var(--bg-blue);
+      color: white;
+    }
+
+    /* Раскрывающийся контент */
+    .day-detail {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s var(--ease-out), opacity 0.3s;
+      opacity: 0;
+    }
+
+    .day-card.is-open .day-detail {
+      max-height: 600px;
+      opacity: 1;
+    }
+
+    .day-detail-inner {
+      padding: 0 1.5rem 1.5rem;
+      border-top: 1px solid rgba(11, 48, 107, 0.1);
+      margin: 0 1.5rem;
+      padding-left: 0;
+      padding-right: 0;
+      padding-top: 1rem;
+    }
+
+    .day-feast {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--bg-red);
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+
+    .day-text {
+      font-size: 0.85rem;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .day-element {
+      font-size: 0.8rem;
+      color: var(--bg-blue-dark);
+      background: rgba(11, 48, 107, 0.05);
+      padding: 0.8rem 1rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--bg-blue);
+      line-height: 1.4;
+    }
+
+    /* --- Подвал --- */
+    .footer {
+      padding: 3rem 4vw; text-align: center;
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--text-muted); background: var(--bg-light);
+      border-top: 1px solid rgba(11, 48, 107, 0.1);
+    }
+
+    /* --- Адаптив --- */
+    @media (max-width: 768px) {
+      .header { flex-direction: column; gap: 1rem; padding: 1rem 4vw; }
+      .nav { flex-wrap: wrap; justify-content: center; gap: 1rem; }
+      
+      .hero { padding: 140px 4vw 60px; }
+      .hero-desc { font-size: 1rem; }
+      
+      .calendar-grid { grid-template-columns: 1fr; }
+      .day-summary { padding: 1.2rem; }
+      .day-detail-inner { margin: 0 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <a href="index.html" class="logo">Дорога к Рождеству Христову</a>
+    <nav class="nav">
+      <a href="calendar.html" style="opacity: 1; border-bottom: 1px solid white;">Календарь</a>
+      <a href="index.html#sections">Разделы</a>
+      <a href="index.html#gallery">Галерея</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <h1 class="hero-title">Календарь ожидания</h1>
+        <div class="hero-subtitle">14 декабря — 6 января</div>
+        <p class="hero-desc">Двадцать четыре дня, в которые Церковь вспоминает святых, готовится к Рождеству и входит в него. Нажмите на карточку, чтобы раскрыть день.</p>
+      </div>
+    </section>
+
+    <section class="calendar-section">
+      <div class="calendar-grid" id="calendar-grid">
+        <!-- Карточки генерируются через JS -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Дорога к Рождеству Христову</span> &nbsp;|&nbsp; 
+    <span>&copy; <span id="year"></span></span> &nbsp;|&nbsp; 
+    <span>С любовью к Богу, с заботой о людях.</span>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    (function () {
+      const days = [
+        {
+          day: 14,
+          weekday: 'суббота',
+          feast: 'Пророк Наум',
+          text: 'В этот день Церковь вспоминает пророка Наума, одного из двенадцати малых пророков. В народе говорили: «Пророк Наум наставит на ум» — с этого дня начинали учить детей грамоте.',
+          element: '<strong>Традиция:</strong> посадить ребёнка за азбуку и первую молитву.'
+        },
+        {
+          day: 15,
+          weekday: 'воскресенье',
+          feast: 'Пророк Аввакум',
+          text: 'Память пророка Аввакума, который вопрошал Бога о судьбах мира и получил ответ: «Праведный верою жив будет». Его книга — одна из самых коротких и самых глубоких в Ветхом Завете.',
+          element: '<strong>Задание:</strong> прочитать вместе с детьми отрывок из книги пророка Аввакума.'
+        },
+        {
+          day: 16,
+          weekday: 'понедельник',
+          feast: 'Преподобный Савва Сторожевский',
+          text: 'Преподобный Савва, ученик Сергия Радонежского, основал монастырь под Звенигородом. Он известен кротостью и даром прозорливости. В этот день вспоминают о милосердии и помощи ближним.',
+          element: '<strong>Традиция:</strong> испечь постный пирог и поделиться с соседями.'
+        },
+        {
+          day: 17,
+          weekday: 'вторник',
+          feast: 'Великомученица Варвара',
+          text: 'Святая Варвара пострадала в III веке за веру во Христа. В народе её почитают как защитницу детей и заступницу от внезапной смерти. Ей молятся о детях и о тех, кто в опасности.',
+          element: '<strong>Традиция:</strong> помолиться о детях и близких.'
+        },
+        {
+          day: 18,
+          weekday: 'среда',
+          feast: 'Преподобный Савва Освященный',
+          text: 'Преподобный Савва основал знаменитую Лавру в Иудейской пустыне. Его устав до сих пор используется в монастырях. Он учил, что пост — это не только воздержание в пище, но и внимание к своей душе.',
+          element: '<strong>Задание:</strong> испечь постное печенье в форме звёзд.'
+        },
+        {
+          day: 19,
+          weekday: 'четверг',
+          feast: 'Никола Зимний',
+          text: 'День памяти святителя Николая, архиепископа Мир Ликийских, чудотворца. Никола Зимний — один из самых любимых праздников на Руси. Святитель Николай известен милосердием и помощью тем, кто в беде.',
+          element: '<strong>Цитата:</strong> «Твой сан и твоя должность требуют от тебя, чтобы ты всецело жил не для себя, а для других» (святитель Николай).'
+        },
+        {
+          day: 20,
+          weekday: 'пятница',
+          feast: 'Святитель Амвросий Медиоланский',
+          text: 'Святитель Амвросий — великий учитель Западной Церкви IV века. Он был известен красноречием и твёрдостью в вере. Его проповеди обращали к Богу многих, включая блаженного Августина.',
+          element: '<strong>Традиция:</strong> прочитать дома главу из духовной книги.'
+        },
+        {
+          day: 21,
+          weekday: 'суббота',
+          feast: 'Преподобный Патапий',
+          text: 'Преподобный Патапий Фивский жил в VII веке. Он известен даром исцеления и молитвой за больных. В этот день вспоминают о попечении о тех, кто слаб и одинок.',
+          element: '<strong>Задание:</strong> сделать кормушку для птиц.'
+        },
+        {
+          day: 22,
+          weekday: 'воскресенье',
+          feast: 'Зачатие праведной Анной Пресвятой Богородицы',
+          text: 'Церковь вспоминает, как праведная Анна, долго бывшая бесплодной, получила от Бога весть о рождении Дочери — будущей Богородицы. Этот день учит доверию Промыслу Божию.',
+          element: '<strong>Традиция:</strong> молитва супругов о даровании детей.'
+        },
+        {
+          day: 23,
+          weekday: 'понедельник',
+          feast: 'Святитель Иоасаф Белгородский',
+          text: 'Святитель Иоасаф, епископ Белгородский, прославился заботой о бедных и больных. Он тайно помогал нуждающимся и учил, что милосердие важнее внешнего благочестия.',
+          element: '<strong>Задание:</strong> навестить пожилого родственника или соседа.'
+        },
+        {
+          day: 24,
+          weekday: 'вторник',
+          feast: 'Преподобный Даниил Столпник',
+          text: 'Преподобный Даниил провёл жизнь на столпе, молясь за мир. Он известен даром прозорливости и исцелений. В этот день вспоминают о терпении и верности избранному пути.',
+          element: '<strong>Традиция:</strong> рассказать детям о святых, которых они знают.'
+        },
+        {
+          day: 25,
+          weekday: 'среда',
+          feast: 'Святитель Спиридон Тримифунтский',
+          text: 'Святитель Спиридон был простым пастухом, ставшим епископом. Он известен милосердием к бедным и твёрдостью в защите веры. Его память — пример того, что святость не зависит от образования и положения.',
+          element: '<strong>Цитата:</strong> «Милосердие важнее поста» (святитель Спиридон).'
+        },
+        {
+          day: 26,
+          weekday: 'четверг',
+          feast: 'Мученики Евстратий, Авксентий, Евгений, Мардарий и Орест',
+          text: 'Пять мучеников пострадали за веру в начале IV века. Они отказались принести жертву языческим богам и приняли смерть с молитвой. Церковь чтит их как пример верности Христу до конца.',
+          element: '<strong>Задание:</strong> помочь нуждающимся — отнести вещи или продукты.'
+        },
+        {
+          day: 27,
+          weekday: 'пятница',
+          feast: 'Мученики Фирс и Левкий',
+          text: 'Святые мученики III века. В народной традиции этот день связан с началом подготовки к сочельнику. Хозяйки начинали перебирать крупу для сочива и кутьи.',
+          element: '<strong>Традиция:</strong> начать готовить сочиво.'
+        },
+        {
+          day: 28,
+          weekday: 'суббота',
+          feast: 'Священномученик Елевферий',
+          text: 'Священномученик Елевферий пострадал в II веке вместе с матерью и учениками. Его память — о мужестве первых христиан, которые не отступали от веры даже перед лицом смерти.',
+          element: '<strong>Задание:</strong> прочитать главу из Евангелия от Луки о Рождестве.'
+        },
+        {
+          day: 29,
+          weekday: 'воскресенье',
+          feast: 'Пророк Аггей',
+          text: 'Пророк Аггей призывал народ вернуться к строительству Иерусалимского храма. Его слово — о том, что забота о доме Божием важнее личного покоя.',
+          element: '<strong>Традиция:</strong> вспомнить о важности храма в жизни христианина.'
+        },
+        {
+          day: 30,
+          weekday: 'понедельник',
+          feast: 'Пророк Даниил и три отрока',
+          text: 'Пророк Даниил и его друзья Анания, Азария и Мисаил сохранили веру в плену. Они отказались от роскоши и языческой пищи, показав пример верности Богу в чужой земле.',
+          element: '<strong>Задание:</strong> испечь постный пирог с яблоками.'
+        },
+        {
+          day: 31,
+          weekday: 'вторник',
+          feast: 'Мученик Севастиан',
+          text: 'Святой Севастиан был воином, тайно исповедовавшим Христа. Когда его веру открыли, он принял мученическую смерть. В новогоднюю ночь верующие вспоминают о том, что время принадлежит Богу.',
+          element: '<strong>Традиция:</strong> поблагодарить Бога за уходящий год.'
+        },
+        {
+          day: 1,
+          weekday: 'среда',
+          feast: 'Мученик Вонифатий',
+          text: 'Святой Вонифатий сначала был далёк от веры, но позже принял мученичество за Христа. Его пример показывает, что путь к святости открыт каждому, независимо от прошлого.',
+          element: '<strong>Традиция:</strong> в этот день принято творить добрые дела.'
+        },
+        {
+          day: 2,
+          weekday: 'четверг',
+          feast: 'Священномученик Игнатий Богоносец',
+          text: 'Святитель Игнатий, ученик апостолов, был епископом Антиохийским. Его называют Богоносцем. По пути на мученичество он написал семь посланий, которые до сих пор читают в Церкви.',
+          element: '<strong>Задание:</strong> написать рождественские открытки близким.'
+        },
+        {
+          day: 3,
+          weekday: 'пятница',
+          feast: 'Святитель Петр Московский',
+          text: 'Святитель Петр был митрополитом Киевским и всея Руси. Он перенёс митрополичью кафедру в Москву, положив начало её церковному возвышению. Его память — о заботе о единстве Церкви.',
+          element: '<strong>Традиция:</strong> молитва о благополучии города и его жителей.'
+        },
+        {
+          day: 4,
+          weekday: 'суббота',
+          feast: 'Великомученица Анастасия Узорешительница',
+          text: 'Святая Анастасия известна тем, что тайно помогала узникам-христианам. Её называют Узорешительницей — она облегчала страдания тех, кто был в заключении.',
+          element: '<strong>Задание:</strong> собрать небольшую посылку для нуждающихся.'
+        },
+        {
+          day: 5,
+          weekday: 'воскресенье',
+          feast: 'Священномученик Василий Спасский',
+          text: 'Священномученик Василий пострадал в XX веке. Его память — о верности пастыря в самые трудные времена. В этот день заканчиваются последние приготовления к сочельнику.',
+          element: '<strong>Традиция:</strong> навести порядок в доме и подготовить всё к сочельнику.'
+        },
+        {
+          day: 6,
+          weekday: 'понедельник',
+          feast: 'Навечерие Рождества Христова (Рождественский сочельник)',
+          text: 'Сочельник — день строгого поста и тихого ожидания. По уставу в этот день вкушают сочиво — постную кашу из пшеницы с мёдом. Вечером совершается всенощное бдение, и Церковь вступает в радость Рождества.',
+          element: '<strong>Рецепт:</strong> сочиво из пшеницы, мака, мёда и грецких орехов. <strong>Цитата:</strong> «Сегодня Вифлеем уподобился небу…» (святитель Иоанн Златоуст).'
+        }
+      ];
+
+      const grid = document.getElementById('calendar-grid');
+
+      function buildCard(dayInfo) {
+        const card = document.createElement('div');
+        card.className = 'day-card';
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-expanded', 'false');
+
+        const monthText = dayInfo.day === 1 || dayInfo.day === 2 || dayInfo.day === 3 || dayInfo.day === 4 || dayInfo.day === 5 || dayInfo.day === 6 ? 'января' : 'декабря';
+
+        card.innerHTML = `
+          <div class="day-summary">
+            <span class="day-number">${dayInfo.day} ${monthText}</span>
+            <span class="day-weekday">${dayInfo.weekday}</span>
+            <div class="day-toggle-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+          </div>
+          <div class="day-detail">
+            <div class="day-detail-inner">
+              <div class="day-feast">${dayInfo.feast}</div>
+              <p class="day-text">${dayInfo.text}</p>
+              <div class="day-element">${dayInfo.element}</div>
+            </div>
+          </div>
+        `;
+
+        function toggle() {
+          const isOpen = card.classList.toggle('is-open');
+          card.setAttribute('aria-expanded', String(isOpen));
+        }
+
+        card.addEventListener('click', toggle);
+
+        card.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            toggle();
+          }
+        });
+
+        return card;
+      }
+
+      days.forEach(function (dayInfo) {
+        grid.appendChild(buildCard(dayInfo));
+      });
+    })();
+  </script>
+
+</body>
+</html>
